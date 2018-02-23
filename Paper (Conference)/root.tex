@@ -1,0 +1,173 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass{ifacconf}  % Comment this line out if you need a4paper
+
+\usepackage{natbib}        % required for bibliography
+\usepackage{amsmath,empheq}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{txfonts}
+\usepackage{acronym}
+
+%todos
+\usepackage[textsize=tiny,backgroundcolor=lightred,linecolor=red, bordercolor=red]{todonotes}
+\usepackage{regexpatch}
+\makeatletter
+\xpatchcmd{\@todo}{\setkeys{todonotes}{#1}}{\setkeys{todonotes}{#1}}{}{}
+\makeatother
+
+\definecolor{lightred}{cmyk}{0,0.05,0,0} % pink
+%%todos
+
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+%\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+%\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+\newcounter{mytempeqncnt}
+\usepackage{tikz}
+%\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+%\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+
+\graphicspath{{figures/}}
+
+
+%%%Acronyms
+
+\acrodef{auv}[AUV]{autonomous underwater vehicle}
+\acrodef{lqr}[LQR]{linear-quadratic regulator}
+\acrodef{are}[ARE]{Algebraic Riccati Equation}
+\acrodef{qlf}[QLF]{quadratic Lyapunov function}
+\acrodef{cqlf}[CQLF]{common quadratic lyapunov function}
+\acrodef{lmi}[LMIs]{linear matrix inequalities}
+\acrodef{lti}[LTI]{linear time-invariant}
+\acrodef{dof}[DoF]{degrees of freedom}
+\acrodef{mimo}[MIMO]{multi-input multi-output}
+
+
+\begin{document}
+\begin{frontmatter}
+
+\title{%\LARGE \bf
+Modular Modeling and Trajectory Tracking LQ Regulator for Underwater Robots 
+}
+
+% \author{Yongyu Chen$^{1}$ and Stefan Sosnowski$^{1}$ and Sandra Hirche$^{1}$% <-this % stops a space
+% % \thanks{*This work was not supported by any organization}% <-this % stops a space
+% \thanks{$^1$ Chair of Information-oriented Control (ITR), Technical University of Munich (TUM),
+%         {\tt\small yongyu.chen@tum.de, sosnowski@tum.de, hirche@tum.de}}%
+% }
+
+
+\author[First]{Yongyu Chen} 
+\author[First]{Stefan Sosnowski} 
+\author[First]{Sandra Hirche}
+
+\address[First]{Chair of Information-oriented Control (ITR), Department of Electrical and Computer Engineering, Technical University of Munich (TUM), Germany (e-mail: \{yongyu.chen, sosnowski, hirche\}@tum.de).}
+% \address[Second]{Chair of Information-oriented Control (ITR), Technical University of Munich (TUM),
+%    Munich, Germany (e-mail: sosnowski@tum.de).}
+% \address[Third]{Chair of Information-oriented Control (ITR), Technical University of Munich (TUM),
+%    Munich, Germany (e-mail: hirche@tum.de).}
+
+
+\begin{abstract}
+In preparation for formulating the geometric design procedure of an \ac{auv} as an optimization problem, in this paper we introduce a new modular modeling approach. The focus is on the identification of the geometric parametrization and the parameter coupling both for the overall kinematic and kinetic design of the robot as well as the control allocation. In addition, we propose a method to formulate the robot dynamics as a linear \ac{mimo} switched system based on the task-determined trim trajectories and synthesize subsequently a switched \ac{lqr} controller, which can be checked for global stability. This enables a novel fully automatic task-dependent co-design of an \ac{auv} and its controller. Simulation results demonstrate that, in the unconstrained actuator case, the proposed model and control strategy can be successfully applied to perfectly track a set of predefined trim trajectories.
+\end{abstract}
+
+
+
+
+% In this work, we propose a modular modeling approach for reconfigurable underwater robots. Each component can be modeled as sample geometric shape determined by several geometric variables. The mass, moment of inertia and the hydrodynamic coefficients can be calculated from these geometric variables so that we can parametrize the robot dynamics with them. Besides, this paper addresses the problem of driving a underwater robot along predefined 3-D trim trajectories. This can be solved by formulating a trajectory-based  error system resulting in \acf{lti} error dynamics for each trim path. As a result, the nonlinear underwater robot dynamic system is transformed into a switched \ac{lti} system. For control strategy, we adopt switched a \ac{lqr} to drive the error states into zero. Simulation results where a underwater robot follows desired trim trajectories are presented to illustrate the performance of the proposed controller.
+
+
+\begin{keyword}
+autonomous vehicles, path planning, marine system, nonlinear control, global stability, linearization, mathematical models
+\end{keyword}
+
+\end{frontmatter}
+
+
+
+
+% \maketitle
+% \thispagestyle{empty}
+% \pagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\input{./sections/INTRODUCTION.tex}
+\input{./sections/MODELING.tex}
+\input{./sections/ERROR_SYSTEM.tex}
+\input{./sections/SIMULATION.tex}
+\input{./sections/CONCLUSION.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+                                  % on the last page of the document manually. It shortens
+                                  % the textheight of the last page by a suitable amount.
+                                  % This command does not take effect until the next page
+                                  % so it should come on the page before the last. Make
+                                  % sure that you do not shorten the textheight too much.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section*{APPENDIX}
+
+% Appendixes should appear before the acknowledgment.
+
+% \section*{ACKNOWLEDGMENT}
+
+% The preferred spelling of the word ÒacknowledgmentÓ in America is without an ÒeÓ after the ÒgÓ. Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .Ó  Instead, try ÒR. B. G. thanksÓ. Put sponsor acknowledgments in the unnumbered footnote on the first page.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% References are important to the reader; therefore, each citation must be complete and correct. If at all possible, references should be commonly available publications.
+
+
+
+\begin{thebibliography}{99}
+\bibitem[Antonelli(2003)]{c10} Antonelli, G., Underwater Robots. Berlin Heidelberg: Springer, 2003.
+\bibitem[Bestaoui et~al.(2007)]{c3} Bestaoui, Y. and Hima, S., Modelling and trajectory generation of lighter-than-air aerial robots-invited paper, in Robot Motion and Control 2007, 3-28. London: Springer, 2007.
+\bibitem[Chen(2007)]{c15} Chen, Y., Modular modeling and control for autonomous underwater vehicle (auv). Master’s thesis, National University of Singapore, Dept. of Mechanical Engineering, 2007.
+\bibitem[Cunha et~al.(2005)]{c6} Cunha, R. and Silvestre, C., A 3D Path-Following Velocity-Tracking Controller for Autonomous Vehicles, in 16th IFAC World Congress, Praha, Czech Republic, 2005, July.
+\bibitem[Du et~al.(2016)]{c1} Du, T., Schulz, A., Zhu, B., Bickel, B., and Matusik, W.. Computational multicopter design. ACM Trans. Graph., 35(6):227:1-227:10, November 2016.
+\bibitem[Grant et~al.(2008)]{c12} Grant, M. and Boyd, S., Graph implementations for nonsmooth convex programs. In V. Blondel, S. Boyd, and H. Kimura, editors, Recent Advances in Learning and Control, Lecture Notes in Control and Information Sciences, pages 95-110.  Springer-Verlag Limited, 2008. 
+\bibitem[Grant et~al.(2014)]{c13} Grant, M. and Boyd, S., CVX: Matlab software for disciplined convex programming, version 2.1. {http://cvxr.com/cvx}, March 2014.
+\bibitem[Kaminer et~al.(1998)]{c5} Kaminer, I. and Pascoal, A. and Hallberg, E. and Silvestre, C., Trajectory Tracking for Autonomous Vehicles: An Integrated Approach to Guidance and Control, AIAA Journal of Guidance, Control, and Dynamics, 21(1): 29-38, 1998.
+\bibitem[Nahon(1996)]{c14} Nahon, M., A simplified dynamics model for autonomous underwater vehicles, Proceedings of Symposium on Autonomous Underwater Vehicle Technology, Monterey, CA, 1996, pp. 373-379. doi: 10.1109/AUV.1996.532437
+\bibitem[Sebbane(2014)]{c2} Sebbane, Y. B., Planning and Decision Making for Aerial Robots. Berlin Heidelberg: Springer, 2014.
+\bibitem[Shorten et~al.(2007)]{c7} Shorten, R., Wirth, F., Mason, O., Wulff, K., and King, C., Stability Criteria for Switched and Hybrid Systems. SIAM Review, 49(4):545-592, 2007.
+\bibitem[Shuzhe et~al.(2011)]{c16} Shuzhe, C., Soon, H. G., Hong, E. Y. and Chitre, M., Modular modeling of autonomous underwater vehicle, OCEANS'11 MTS/IEEE KONA, Waikoloa, HI, 2011, pp. 1-6. doi: 10.23919/OCEANS.2011.6106921
+\bibitem[Silvestre et~al.(2002)]{c4} Silvestre, C., Pascoal, A., and Kaminer, I., On the design of gain-scheduled trajectory tracking controllers. International Journal of Robust and Nonlinear Control, 12(9):797-839, 2002.
+\bibitem[Tang(1999)]{c11} Tang, S., Modeling and simulation of the autonomous underwater vehicle, autolycus. Master's thesis, Massachusetts Institute of Technology, Dept. of Ocean Engineering, 1999.
+\bibitem[Vollmayr et~al.(2014)]{c9} Vollmayr, A.N., Sosnowski, S., Hirche, S., and van Hemmen, J.L., Snookie:
+an autonomous underwater vehicle with artificial lateral line system. In Horst Bleckmann, Joachim Mogdans, and Sheryl L. Coombs, editors, Flow Sensing in Air and Water, chapter 20, pages 521-562. Springer Berlin Heidelberg, Berlin, Heidelberg, viii edition, 2014.
+\bibitem[Yoerger et~al.(1990)]{c8} Yoerger, v,  Cooke, J. G., and  Slotine, J. J. E., The influence of thruster
+dynamics on underwater vehicle behavior and their incorporation into control system design. IEEE Journal of Oceanic Engineering, 15(3):167-178, July 1990.
+\end{thebibliography}
+\end{document}
