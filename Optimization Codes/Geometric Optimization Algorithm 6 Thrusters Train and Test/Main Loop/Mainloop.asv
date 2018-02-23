@@ -1,0 +1,43 @@
+
+
+% formulate the optimization problem as bounded least square optimization problem  
+
+% small angle approximation: 0.2*57.3=11.46 degree
+
+
+l_bound=[0;0;0;0;0;0];
+
+% the upper bound is the maximal thrust the thruster can generate
+
+% use the data from T100 (from BlueRobotics)
+% small angle of attack 
+
+u_bound=[23.6;23.6;23.6;23.6;23.6;23.6];
+
+% our consideration is always to minimize the difference between the
+% desired generalised force and the real generalised force under the
+% current configuration
+
+% minimization problem: unbounded least squares
+
+cvx_begin
+variable x(6)
+minimize(norm(B*x-tau_d_1(:,:,1))+norm(B*x-tau_d_2(:,:,1))+norm(B*x-tau_d_3(:,:,1))+norm(B*x-tau_d_4(:,:,1))+norm(B*x-tau_d_5(:,:,1))+norm(B*x-tau_d_6(:,:,1))+norm(B*x-tau_d_7(:,:,1)))
+subject to
+l_bound<= x <= u_bound
+cvx_end
+
+
+
+% %% formulate the problem as Bound-constrained least squares problem
+% AA=B_T_spin{40};
+% bb=tau_1;
+% x_qp = quadprog( 2*AA'*AA, -2*AA'*bb, [], [], [], [], l_bound, u_bound );
+
+
+%% In the second phase, we optimize the position vector of the underwater robot 
+
+%% In the third phase,
+
+% formualte the optimization of the direction vector as sequential
+% quadraric programming subject to unit vector 

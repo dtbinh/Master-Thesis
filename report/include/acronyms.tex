@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%% ACRONYMS %%%%%%%%%%%%%%%%%
+\begin{acronym}
+     \acro{TF}[$\lbrace\mathcal{T}\rbrace$]{Trim frame}
+    \acro{FF}[$\lbrace FS \rbrace$]{Frenet-Serret frame}
+    \acro{IF}[$\lbrace i\rbrace$]{Inertial world frame}
+    \acro{BF}[$\lbrace b \rbrace$]{Body frame}
+    \acro{IF}[$\lbrace f\rbrace$]{Fin frame}
+    \acro{BF}[$\lbrace flow \rbrace$]{Flow frame}
+    	\acro{Q}[$\emph{\textbf{Q}}$]{Linear velocity transform matrix from body frame $\lbrace b \rbrace$ to inertial world frame $\lbrace i \rbrace$}
+	\acro{R}[$\emph{\textbf{R}}$]{Angular velocity transform matrix from body frame $\lbrace b \rbrace$ to inertial world frame $\lbrace i \rbrace$}
+    \acro{T}[$\mathcal{T}$]{Trim trajectory}
+    \acro{etaT}[$\vec{\eta}_{\mathcal{T}}$]{Trim trajectory kinematic specification}
+	\acro{m}[$m$]{Number of trim trajectories}
+	\acro{n}[$n$]{Number of actuators}
+	\acro{nt}[$n_{t}$]{Number of thrusters}
+	\acro{nf}[$n_{f}$]{Number of fins}
+	\acro{k}[$k$]{Index for optimization iteration}
+	\acro{k}[$k_{total}$]{Total number of optimization iterations}
+	\acro{s}[$s$]{Index for spin direction configuration}
+    \acro{p}[$\vec{p}$]{Position vector}
+	\acro{lambda}[$\vec{\lambda}$]{Orientation vector}
+    	\acro{v}[$\vec{v}$]{Linear velocity vector}
+    	\acro{omega}[$\vec{\omega}$]{angular velocity vector}
+	\acro{MRB}[$\emph{\textbf{M}}_{RB}$]{Rigid body inertia matrix}
+	\acro{CRB}[$\emph{\textbf{C}}_{RB}$]{Rigid body Coriolis matrix}
+	\acro{MA}[$\emph{\textbf{M}}_{A}$]{Added mass inertia matrix}
+	\acro{CA}[$\emph{\textbf{C}}_{A}$]{Added mass Coriolis matrix}
+	\acro{M}[$\emph{\textbf{M}}$]{Complete inertia matrix}
+	\acro{C}[$\emph{\textbf{C}}$]{Complete Coriolis matrix}
+	\acro{D}[$\emph{\textbf{D}}$]{Damping matrix}
+	\acro{g}[$\vec{g}$]{Restoring vector}
+	\acro{tau}[$\vec{\tau}$]{Generalized force vector}
+	\acro{f}[$\vec{f}$]{Force vector}
+	\acro{m}[$\vec{m}$]{Moment vector}
+	\acro{upsilon}[$\vec{\upsilon}$]{Generalized velocity vector}
+	\acro{CO}[$CO$]{Hull geometry center}
+	\acro{CG}[$CG$]{Center of gravity}
+	\acro{CB}[$CG$]{Center of buoyancy}
+	\acro{B}[$B$]{Buoyancy}
+    	\acro{W}[$G$]{Gravity}
+	\acro{L}[$L$]{Lift force}
+    	\acro{D}[$D$]{Drag force}
+	\acro{CL}[$C_{L}$]{Lift coefficient}
+    	\acro{CD}[$C_{L}$]{Drag coefficient}
+    	\acro{cl}[$c_{L}$]{Approximated constant lift coefficient}
+    	\acro{cd}[$c_{D}$]{Approximated constant drag coefficient}
+    \acro{u}[$u$]{Robot surge velocity in body frame $\lbrace b \rbrace$}
+	\acro{v}[$v$]{Robot sway velocity in body frame $\lbrace b \rbrace$}
+	\acro{w}[$w$]{Robot heave velocity in body frame $\lbrace b \rbrace$}
+	\acro{p}[$p$]{Robot roll velocity in body frame $\lbrace b \rbrace$}
+	\acro{q}[$q$]{Robot pitch velocity in body frame $\lbrace b \rbrace$}
+	\acro{r}[$r$]{Robot yaw velocity in body frame $\lbrace b \rbrace$}
+	\acro{x}[$x$]{Robot position (x-component) in inertial world frame $\lbrace i \rbrace$}
+	\acro{y}[$y$]{Robot position (y-component) in inertial world frame $\lbrace i \rbrace$}
+	\acro{z}[$z$]{Robot position (z-component) in inertial world frame $\lbrace i \rbrace$}
+	\acro{phi}[$\phi$]{Robot roll angle}
+    \acro{theta}[$\theta$]{Robot pitch angle}
+    \acro{psi}[$\psi$]{Robot yaw angle}
+    \acro{alpha}[$\alpha$]{Angle of attack}
+    \acro{rho}[$\rho$]{Fluid density}
+    \acro{gammaT}[$\gamma_{\mathcal{T}}$]{Motion path angle}
+    \acro{delta}[$\delta_{F}$]{Deflection angle of fin}
+    \acro{rg}[$\vec{r}_{G}$]{Robot center of mass in body frame $\lbrace b \rbrace$}
+    \acro{rt}[$\vec{r}_{F}$]{Position of fin geometric center in body frame $\lbrace b \rbrace$}
+    \acro{rf}[$\vec{r}_{T}$]{Position of thruster in body frame $\lbrace b \rbrace$}
+    \acro{dt}[$\vec{d}_{T}$]{Motion orientation of thruster in body frame $\lbrace b \rbrace$}
+    \acro{lambdat}[$\lambda_{T}$]{Thrust-moment ratio of thruster}
+    \acro{bt}[$b_{T}$]{Motion spin of thruster}
+    \acro{lh}[$l_{H}$]{Hull length}
+    \acro{rh}[$r_{H}$]{Hull radius}
+    \acro{dh}[$d_{H}$]{Hull diameter}
+    \acro{lh}[$x_{F}$]{Position fin of geometric center (x-component) in body frame $\lbrace b \rbrace$ }
+    \acro{af}[$a_{F}$]{Length of fin}
+    \acro{bf}[$b_{F}$]{Width of fin}
+    \acro{gammaF}[$\gamma_{F}$]{Orientation angle of fin}
+    	\acro{mtotal}[$m_{total}$]{Total weight of robot}
+    	\acro{V}[$V$]{Total volume of robot}
+    %	\acro{rg}[$\vec{r}_{g}$]{Position of CG in body frame $\lbrace b \rbrace$}
+    	\acro{Ig}[$\emph{\textbf{I}}_{g}$]{Moment of ineratia with respect to CG}
+    	\acro{Ib}[$\emph{\textbf{I}}_{b}$]{Moment of inertia with respect to CO}
+\end{acronym}

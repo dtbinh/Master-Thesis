@@ -1,0 +1,66 @@
+%% add paths of all subfolders
+
+% the AUV parameter initialization
+addpath(strcat(pwd,'/','AUV Parameter Initialization'));
+
+% the Frenet-Serret path planning folder
+addpath(strcat(pwd,'/','Path Planning Frenet Frame'));
+
+% modular modelling of the AUV
+addpath(strcat(pwd,'/','Modular Modelling of Underwater Robots'));
+
+% subfolders of Modular Modelling of Underwater Robots
+addpath(strcat(pwd,'/','Modular Modelling of Underwater Robots','/','MassMomentofInertiaCalculation'));
+addpath(strcat(pwd,'/','Modular Modelling of Underwater Robots','/','Hull Hydrodynamic Parameter Calculation'));
+addpath(strcat(pwd,'/','Modular Modelling of Underwater Robots','/','AddedMassCalculation'));
+% linearization of the 6DOF nonlinear AUV dynamics
+addpath(strcat(pwd,'/','Formulas Linearization'));
+
+% Simulink model for UAV: switched LQR control and trim trajectory
+
+addpath(strcat(pwd,'/','Trim Trajectory Switched LQR Control'));
+
+% formulate and linearize the error dynamics 
+addpath(strcat(pwd,'/','Linearized Error Dynamics'));
+
+% generate the configuration matrix for thruster
+addpath(strcat(pwd,'/','Thruster Configuration Matrix Calculation'));
+
+% generate the configuration matrix for fins
+addpath(strcat(pwd,'/','Fin Configuration Matrix Calculation'));
+
+% use high order polynomials 
+addpath(strcat(pwd,'/','Approximation for Lift and Drag Coefficient'));
+
+% robot design 
+addpath(strcat(pwd,'/','Robot Design'));
+
+% optimization of hull 
+addpath(strcat(pwd,'/','Optimization of Hull Size'));
+
+% An accurate modeling of hydrodynamic forces using fin frame 
+% and calculation of lift and drag force based on angle of attack
+% 
+% %% run parameter initialization
+% AUVParaInitialization;
+% 
+% %% perform path planning
+% 
+% % formualte the Frenet-Serret path planning formulas 
+% PathPlanningFormulation;
+% 
+% % specify explicit values for each trim trajectory segment
+% 
+% PathPlanningSpecification;
+% 
+% %%  Desired Input Calculation
+% 
+% % For each trim trajectory the input should be constant
+% 
+% % calculation the static reference input 
+% 
+% DesiredInputCalculation;
+% 
+% %% Robot Body Design 
+
+

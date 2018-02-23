@@ -1,0 +1,206 @@
+\documentclass[ITR,MA,english,final]{LSR_thesis} 
+\graphicspath{{pics/}{logos/}}
+
+\usepackage{psfrag,amsbsy,graphics,float}
+\usepackage{graphicx, color} %deleted [dvips] in front of {graphicx, color} for usage with PDFLaTeX
+%\usepackage[latin1]{inputenc}
+%\usepackage{verbatim} 
+\usepackage{amsmath,empheq}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[]{algorithm2e}
+\usepackage{nomencl}
+\usepackage{hyperref}
+% \usepackage{natbib}
+\newcommand\floor[1]{\lfloor#1\rfloor}
+\newcommand\ceil[1]{\lceil#1\rceil}
+\makenomenclature
+\newcommand{\nm}[2]{\nomenclature{#1}{#2}}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows}
+\usetikzlibrary{intersections}
+
+\usepackage{etex}
+\reserveinserts{25}
+\usepackage{morefloats}
+\usepackage[section] {placeins}
+
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+
+
+\tikzstyle{startstop}=[rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{io}=[tropezium, tropezium left angle=70, tropezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{io}=[tropezium, tropezium left angle=70, tropezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{process}=[rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{decision}=[diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+
+\usepackage{txfonts}
+\renewcommand{\vec}[1]{\boldsymbol{#1}}
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{10pt}
+\usepackage{mathtools}
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+\newtheorem{identity}{Identity}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+%\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+
+%% Options:
+%% LSR: LSR Template with Prof. Buss as default
+%% ITR: ITR Template with Prof. Hirche as default
+
+%% BA: Bachelorarbeit / Bachelor thesis
+%% MA: Masterarbeit / Master thesis
+%% HS: Hauptseminar / Scientific seminar
+%% PP: Projektpraktikum / practical course
+%% IP: Ingenieurpraxis
+%% FP: Forschungspraxis
+%% SeA: Semesterarbeit (MW)
+
+%% english
+%% german
+
+%% final
+%% intermediate
+
+%%% last changes: 05.04.2016 (v.gabler@tum.de)
+
+%_________MACROS_________ (optional and customizable - see output)
+\input{./include/packages.tex}
+\input{./include/macros.tex}
+%_______Start_Document______________________________________
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% title page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% for an english theis. The title:
+\title{Trajectory-based Controller-Geometry-Codesign of Underwater Robots}
+%% Für deutsche Arbeiten: Deutscher Titel:
+% \title{Die Antwort auf Alles und Mehr - Ein Trauerspiel in 4 Akten}
+% and English translation
+%\titletranslation{Subtitle} 
+% data about YOU!:
+\student{Yongyu Chen} 			%% your name
+\studtitle{B.Sc.} 			%% Bachelor of Arts, Dr.~phil, etc.
+\street{Schr\"ofelhofstr. 22/0906}			%% your address
+\city{81375 M\"unchen}								%		"
+\phone{0176\,82559612}			%% your telephone-no.
+
+%% if more students are involved (e.g. PP) 
+%--the following parted is not tested ---
+% please report bugs to v.gabler@tum.de 
+%\studenttwo{Zweiter Student}
+%\studtitletwo{} 
+%\studentthree{} 
+%\studtitlethree{} 
+%\studentfour{} 
+%\studtitlefour{} 
+%-----------------------------------------
+\supervisor{Dr.-Ing. Stefan Sosnowski}			%% your supervisor
+\finalrep{27.10.2017}						%% final presentation / date
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\cleardoublepage
+\phantom{u}
+\phantom{1}\vspace{6cm}
+\begin{center}
+\add[inline]{In your final hardback copy, replace this page with the signed exercise sheet.}
+
+\vspace{3cm}
+
+\todo[inline,color=red!70]{Before modifying this document, READ THE INSTRUCTIONS AND GUIDELINES!}
+\end{center}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\topmargin5mm
+\textheight220mm
+\pagenumbering{arabic}
+\phantom{u}
+\begin{abstract}
+Conventionally, designing an underwater robot requires experienced experts
+to adapt the robot structure to a series of designing requirements: buoyancy neutral, high surge velocity, low power consumption, low construction cost and small compact volume, etc. This is usually an iterative process, since most of the robot geometric variables are tightly coupled and immediately affect the vehicle dynamics and performance of the robot. Furthermore, due to the nonlinear and coupled nature of the robot dynamics, changes in the vehicle geometric variables strongly influence the control design. In this work, we propose a novel a system-engineering approach to the controller-geometry-codesign: kinematic and dynamic requirements are derived from a set of desired trajectories the robot should perform. Together with the conventional design requirements we formulate the robot designing procedure as multi-stage iterative optimizations.
+
+Due to the customizable robot geometric structure, we build the robot in a modular way in this work. That is, the robot constituent parts are modeled as simple shapes parametrized by several geometric decision variables. The inertia matrices, Coriolis matrices, restoring matrix and the damping matrix can be calculated from them. As a result, a parametrized vehicle dynamic model indicating the intrinsic couplings among these decision variables is derived.
+
+Trim trajectories are chosen in this thesis since along them the vehicle moves stably. It implies  that all velocities, roll and pitch angles as well as the hydrodynamic coefficients are constant. Based on these characteristics, we can linearize the dynamics of the error between the real robot' states and desired trim states uniquely. Each specified trim trajectory corresponds to a linear multi-input multi-output error dynamic system for a given robot geometry. Thus, the nonlinear robot dynamics is formulated as a linear switched system in the thesis and we utilize switched linear quadratic regulator to control the robot's moving trajectories.
+
+Simulations for optimizing the actuator placements including six thrusters and four fins combined with two thrusters are performed, respectively. According to the simulation results, the proposed optimization algorithm is able to find a locally optimal and controllable robot geometry which can track the desired trim trajectories stably with a unconstrained switched LQR controller.
+
+
+  
+%\begin{center}	
+%\normalsize \textbf{Zusammenfassung}\\
+%\end{center}
+%Hier die deutschsprachige Zusammenfassung. 
+%\optional{Talk to your supervisor if this is needed and/or wanted before starting with your thesis}
+\end{abstract}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%% Widmung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\phantom{u}
+\phantom{1}\vspace{6cm}
+\begin{center}
+%Hier die Widmung oder leer lassen
+\end{center}
+
+
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%Inhaltsverzeichnis%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ACTUAL CONTENT OF YOUR WORK %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Kapitel - externe Dateien zur Ordnung%%%%%%%%%%%%%
+\input{./chapters/CH1_Introduction.tex}
+\input{./chapters/CH2_Modeling.tex}
+\input{./chapters/CH3_Planning.tex}
+\input{./chapters/CH4_Dynamics.tex}
+\input{./chapters/CH5_Formulation.tex}
+\input{./chapters/CH6_Simulation.tex}
+\input{./chapters/Conclusion.tex}
+
+\appendix
+	\input{./chapters/Appendix.tex}
+%%%%%%%%%%%%%%%%%%_Abbildungsverzeichnis %%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\addcontentsline{toc}{chapter}{List of Figures} 
+\listoffigures 	
+
+%%%%%%%%%%%%%%%%%%_Acronyms and Notations %%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\chapter*{Notations}
+\input{./include/acronyms.tex}
+
+%%%%%%%%%%%%%%%%%%Literaturverzeichnis %%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{mybib}
+\bibliographystyle{alphaurl}
+
+%%%%%%%%%%%%%%%%%%%%License %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\chapter*{License}
+\markright{LICENSE}
+This work is licensed under the Creative Commons Attribution 3.0 Germany
+License. To view a copy of this license,
+visit \href{http://creativecommons.org/licenses/by/3.0/de/}{http://creativecommons.org} or send a letter
+to Creative Commons, 171 Second Street, Suite 300, San
+Francisco, California 94105, USA.
+
+%%%%%%%%%%%%%%%%%%%%List of TODOs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% this MUST be empty and removed in the final version of course!
+%\listoftodos
+\end{document}

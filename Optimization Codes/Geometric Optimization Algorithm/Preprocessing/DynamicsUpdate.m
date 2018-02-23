@@ -1,0 +1,55 @@
+%% Dynamics Update 
+
+% after the configuration is changed, we have a new input mapping matrix,  
+% the term BH and all other terms involving BH should be updated in the
+% script "LinearizationFormulas"
+
+% we update BH at first 
+
+
+BH=inv(M_RB)*B*[T1;T2;delta1;delta2;delta3;delta4];
+
+
+BH_v=BH(1:3,:);
+
+BH_w=BH(4:6,:);
+
+% then we should update all the matices relating to BH
+
+% update of the inputs 
+
+% input matrix 
+
+B_v_l=jacobian(BH_v,[T1 T2 delta1 delta2 delta3 delta4]);
+
+
+B_w_l=jacobian(BH_w,[T1 T2 delta1 delta2 delta3 delta4]);
+
+% update all the symbolic function 
+
+%------ linear velocity part ----------------------------------------------
+
+% dynamic states 
+
+A_v_v_l=symfun(jacobian(F_v+BH_v,[u_l v_l w_l]),[u_l v_l w_l p_l q_l r_l]);
+
+A_v_w_l=symfun(jacobian(F_v+BH_v,[p_l q_l r_l]),[u_l v_l w_l p_l q_l r_l]);
+
+
+% kinematic states 
+
+A_v_lambda_l=symfun(jacobian(F_v_lambda,[phi_l,theta_l,psi_l]),[phi_l theta_l psi_l]);
+
+% ---- angular velocity part
+% ----------------------------------------------------------------------
+
+% dynamic states 
+
+A_w_v_l=symfun(jacobian(F_w+BH_w,[u_l v_l w_l]),[u_l v_l w_l p_l q_l r_l]);
+
+A_w_w_l=symfun(jacobian(F_w+BH_w,[p_l q_l r_l]),[u_l v_l w_l p_l q_l r_l]);
+
+
+% kinematic states 
+
+A_w_lambda_l=symfun(jacobian(F_w_lambda,[phi_l,theta_l,psi_l]),[phi_l theta_l psi_l]);

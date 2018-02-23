@@ -1,0 +1,623 @@
+\chapter{Formulation of Optimization Problem}
+To determine the geometric configuration is the most significant part in this work. In the Chapter 2, we have established the modular dynamic model for the robot determined by several geometric decision variables. Additionally, the Coriolis terms, the drag term in the dynamics depend also on the velocities. The restoring term is influenced by the kinematics. The kinematic and dynamic requirements come from the desired trim trajectories.  In conclusion, planned trim trajectory combinations $\mathcal{T}_{1},\cdots,\mathcal{T}_{m}$ and decision variables for hull $\mathfrak{d}_{H}$, thrusters $\mathfrak{d}_{P}$ and fins $\mathfrak{d}_{F}$ specify the current robot dynamics. These geometric decision variables are defined as follows:
+\begin{definition}
+The decision variables for the hull $\mathfrak{d}_{H}$ are defined as $\mathfrak{d}_{H}=\lbrace~l_{H}, r_{H}~|~l_{H}\in \mathbb{R}^{+}, r_{H} \in \mathbb{R}^{+}~\rbrace$, where $l_{H}$ denotes the length of the hull cylinder and $r_{H}$ is the radius of the hull cylinder.
+\end{definition}
+\begin{definition}
+The decision variables for the thrusters $\mathfrak{d}_{P}$ are defined as $\mathfrak{d}_{P}=\lbrace~b_{T}, \vec{d}_{T}, \vec{r}_{T}~\\|~b_{T}\in \lbrace -1, 1 \rbrace, \vec{d}_{T} \in \mathbb{R}^{3}, \vec{r}_{T} \in \mathbb{R}^{3}~\rbrace$, where $b_{T}$ denotes the motor spin direction, $\vec{d}_{T}$ is the motor orientation and $\vec{r}_{T}$ represents the motor position.
+\end{definition}
+\begin{definition}
+The decision variables for the fins $\mathfrak{d}_{F}$ are defined as $\mathfrak{d}_{F}=\lbrace~x_{T}, \gamma_{T}~|~x_{T}\in \mathbb{R}, \gamma_{T} \in \lbrace -\pi,\pi \rbrace~\rbrace$, where $x_{T}$ denotes the x-coordinate of the fin geometric center in the body frame $\lbrace b \rbrace$, $\gamma_{T}$ is the fin rotation angle.
+\end{definition}
+%\begin{table}
+%\centering
+%\caption{Decision Variables for Underwater Robot Geometry}
+%\begin{tabular}{ |p{5cm}|p{5cm}|p{5cm}|  }
+%\hline
+%\multicolumn{3}{|c|}{Decision Variable List} \\
+%\hline
+%Decision Variables for Hull $\mathfrak{d}_{H}$& Decision Variables for Propellers $\mathfrak{d}_{P}$&Decision Variables for Fins $\mathfrak{d}_{F}$\\
+%\hline
+% Length of hull $l_{H}$& Motor spin direction $b_{T}$&Geometric center horizontal coordinate $x_{T}$ \\
+%Radius of hull $r_{H}$ &Motor orientation $\vec{d}_{T}$&Rotation angle %$\gamma_{F}$  \\
+%&Motor position $\vec{r}_{T}$ & \\
+%\hline
+%\end{tabular}
+%\label{table:DecisionVariable}
+%\end{table}
+
+Let us firstly write the dynamics equation of underwater robots into the form that the inertia matrix, the Coriolis matrix, the damping matrix and the input matrix are parametrized with dynamic and kinematic state variables and the decision variables:
+\begin{align}
+&\emph{\textbf{M}}_{RB}(\vec{r}_{T},\mathfrak{d}_{H},\mathfrak{d}_{F})\dot{\vec{\upsilon}}+\emph{\textbf{M}}_{A}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H})\dot{\vec{\upsilon}} \nonumber \\
+&+\emph{\textbf{C}}_{RB}(\vec{x}_{dyn,\mathcal{T}},\vec{r}_{T},\mathfrak{d}_{H},\mathfrak{d}_{F})\vec{\upsilon}+ 
+\emph{\textbf{C}}_{A}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H})\vec{\upsilon}+\emph{\textbf{D}}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H})\vec{\upsilon} \nonumber \\
+&+\vec{g}(\vec{x}_{kin,\mathcal{T}},\mathfrak{d}_{F},\vec{r}_{T},\mathfrak{d}_{H}) \nonumber \\
+&=\emph{\textbf{B}}_{T}(\vec{d}_{T},\vec{r}_{T},b_{T})
+\begin{pmatrix}
+u_{T,1}  \\ \vdots \\ u_{T,n_{t}}
+\end{pmatrix}+
+\emph{\textbf{B}}_{F}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{F})
+\begin{pmatrix}
+\delta_{F,1}  \\ \vdots \\ \delta_{F,n_{f}}
+\end{pmatrix}.\label{EQ:DecisionDynamics}
+\end{align}
+We have already assumed that the moment of inertia is only determined by the hull, thus $\mathfrak{d}_{H}$ determines the $\emph{\textbf{I}}_{g}$. All components contribute to the total mass of the robot. The positions of all modules will influence the center of mass $\vec{r}_{g}^{b}$, see equation \ref{EQ:CGAll}. Hence, according to the \ref{EQ:MRBCO}, all geometric decision variables will influence the robot rigid body matrix. 
+\begin{align}
+\left.\begin{tabular}{l}
+$\mathfrak{d}_{P}$ \\
+$\mathfrak{d}_{H}$ \\
+$\mathfrak{d}_{F}$
+\end{tabular}\right\}\Rightarrow \emph{\textbf{M}}_{RB},\label{EQ:DynamikRelationship1}
+\end{align}
+The added mass inertia matrix is a hydrodynamic term, based on the assumptions that all the hydrodynamic coefficient are only calculated from the hull geometry and the equation~\ref{EQ:AddedMassMatrix}. Since this term is velocity dependent, we have different desired velocities for different trim trajectory segments. It means that for each segment we have a corresponding desired added mass inertia matrix, i.e., $\emph{\textbf{M}}_{A,1}, \cdots, \emph{\textbf{M}}_{A,m}$. To sum up, we have 
+\begin{align}
+\left.\begin{tabular}{l}
+ $\mathfrak{d}_{H}$ \\
+ $\vec{x}_{dyn,\mathcal{T}}$
+\end{tabular}\right\}\Rightarrow \emph{\textbf{M}}_{A}.\label{EQ:DynamikRelationship2}
+\end{align} 
+According to the equation~\ref{EQ:CRBCO}, the rigid body Coriolis term is calculated from the mass $m$, the angular velocity $\vec{\omega}$ and the center of mass $\vec{r}_{g}^{b}$. All robot components have contribution to  the total mass and the center of gravity. The $m$ trim trajectory segments give $m$ trim angular velocities $\vec{\omega}_{\mathcal{T},1}, \cdots, \vec{\omega}_{\mathcal{T},m}$, and thus we also have $m$ desired rigid body  
+Coriolis matrices $\emph{\textbf{C}}_{RB,1}, \cdots, \emph{\textbf{C}}_{RB,m}$.
+\begin{align}
+\left.\begin{tabular}{l}
+$\mathfrak{d}_{P}$ \\
+$\mathfrak{d}_{H}$ \\
+$\mathfrak{d}_{F}$ \\
+$\vec{x}_{dyn,\mathcal{T}}$
+\end{tabular}\right\}\Rightarrow \emph{\textbf{C}}_{RB}(\vec{x}_{dyn})
+\label{EQ:DynamikRelationship3}
+\end{align}
+For the hydrodynamics added mass Coriolis matrix, see~\ref{EQ:CoriolisMatrix}, only the hull hydrodynamics and the trim trajectory segments influence it, thus we obtain
+\begin{align}
+\left.\begin{tabular}{l}
+$\mathfrak{d}_{H}$ \\
+$\vec{x}_{dyn,\mathcal{T}}$
+\end{tabular}\right\}\Rightarrow \emph{\textbf{C}}_{A}(\vec{x}_{dyn}).
+\label{EQ:DynamikRelationship4}
+\end{align}
+We have $m$ added mass Coriolis matrices $\emph{\textbf{C}}_{A,1}, \cdots, \emph{\textbf{C}}_{A,m}$. 
+As a hydrodynamic term, the damping is determined by the same group of variables: 
+\begin{align}
+\left.\begin{tabular}{l}
+$\mathfrak{d}_{H}$ \\
+$\vec{x}_{dyn,\mathcal{T}}$
+\end{tabular}\right\}\Rightarrow \emph{\textbf{D}}(\vec{x}_{dyn}).
+\label{EQ:DynamikRelationship5}
+\end{align}
+The $m$ trim trajectories give us $m$ damping matrices $\emph{\textbf{D}}_{1}, \cdots, \emph{\textbf{D}}_{m}$
+The restoring term ~\ref{EQ:Restoring} depends on the kinematics $\Pi_{i}\vec{\lambda}$ from trim trajectories and the center of gravity $\vec{r}_{g}^{b}$, so we obtain
+\begin{align}
+\left.\begin{tabular}{l}
+$\mathfrak{d}_{P}$ \\
+$\mathfrak{d}_{H}$ \\
+$\mathfrak{d}_{F}$ \\
+$\vec{x}_{kin,\mathcal{T}}$
+\end{tabular}\right\}\Rightarrow \vec{g}(\vec{\eta}).
+\label{EQ:DynamikRelationship6}
+\end{align}
+We have $m$ restoring terms as well, that is, $\vec{g}_{1}(\vec{\eta}), \cdots, \vec{g}_{m}(\vec{\eta})$.
+Recall that in Chapter 4, we discussed how to calculate the desired generalised force $\vec{\tau}_{\mathcal{T}}$ (\ref{EQ:desiredtau}) and the desired control inputs of actuators $\vec{u}_{\mathcal{T}}$ (\ref{EQ:desiredu}) along the trim trajectory segment $\mathcal{T}$. Besides, from the aforementioned relationships, we know for each trim trajectory segment, we have a corresponding $\emph{\textbf{C}}_{RB}$, $\emph{\textbf{C}}_{A}$, $\emph{\textbf{D}}$ and $\vec{g}(\vec{\eta})$. Thus, we can parametrize the desired inputs with the decision variables and the trim specifications as follows:
+\begin{align}
+\vec{\tau}_{d,\mathcal{T}}=&\emph{\textbf{C}}_{RB}(\vec{x}_{dyn,\mathcal{T}},\vec{r}_{T},\mathfrak{d}_{H},\mathfrak{d}_{F})\vec{\upsilon}_{\mathcal{T}}+ 
+\emph{\textbf{C}}_{A}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H})\vec{\upsilon}_{\mathcal{T}}+\emph{\textbf{D}}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H})\vec{\upsilon}_{\mathcal{T}} \nonumber \\
+&+\vec{g}(\vec{x}_{kin,\mathcal{T}},\mathfrak{d}_{F},\vec{r}_{T},\mathfrak{d}_{H}),
+\end{align}
+and 
+\begin{align}
+\vec{u}_{d,\mathcal{T}}=\emph{\textbf{B}}_{a}^{-1}(\vec{x}_{dyn,\mathcal{T}})\vec{\tau}_{d,\mathcal{T}}. \label{EQ:UTrimDesired}
+\end{align}
+Based on the previous analysis of the relationship between the geometric decision variables, the trim specifications and the robot dynamics, we can see that, the hull geometric variables $\mathfrak{d}_{H}$ have impact on all the dynamic terms. In order to make the optimization feasible, we decouple the optimization of $\mathfrak{d}_{H}$ from other decision variables. It means that, we perform a two-stage optimization. The hull volume is determined with its optimization algorithm at the first stage and the hull geometry is set as fixed for optimization of actuator configuration in the second optimization phase.
+\section{Optimization of Hull Size}
+The first stage of geometric optimization is to find optimal hull size.
+We use a cuboid to approximately model the navigation and sensory system, communication devices and CPU. The size and weight of the cuboid will be treated as constant for the hull optimal design and this raise the requirements for the minimal volume of the robot hull. Suppose the minimal radius and minimal length of the robot hull are denoted by $r_{H,min}$ and $l_{H,min}$ respectively. These two variables come from the requirement that the robot hull should at least enclose all the necessary devices (CPU, sensor and IMU and so on). The number of batteries is an integer decision variable denoted by $n_{bat}\in \mathbb{N}^{+}$. Buoyancy neutral is an important property for submersibles which means its mass is equal to the equivalent volume of water. More precisely, the total weight of the robot $W$ should be equal to the total buoyancy $B$. We want to keep this property for our robot design, however, sometimes it is difficult to make the robot buoyancy neutral by merely changing the size of the robot. So we also need ballast material to help us to build the robot. Suppose we use $m_{ballast}$-kg ballast material with density $\rho_{ballast}$. The volume of the ballast material can be computed as $V_{ballast}=m_{ballast}/ \rho_{ballast}$. The hull optimization problem is formulated as follows: 
+
+\begin{equation}
+\begin{array}{llllll}
+\displaystyle \min_{l_{H},r_{H},n_{bat},m_{ballast}} & \multicolumn{3}{l}{M(l_{H},r_{H},n_{bat},m_{ballast})+\mu_{BN}(B-W)^{2}} \\
+\textrm{s.t.} & l_{H,min} \leq l_{H}, \\
+&r_{H,min} \leq r_{H}, \\
+&E_{min} \leq n_{bat}E_{bat},\\
+&c(l_{H},r_{H},n_{bat},m_{ballast})+c_{d} \leq c_{max},\\
+&V_{bat}(n_{bat})+V_{ballast}(m_{ballast})+V_{d} \leq V(l_{H},r_{H})
+\end{array}
+\end{equation}
+where $M$ denotes the optimization metrics from the robot design requirements. We will elaborate the objective function and the constraints 
+in the following section. The volume $V_{d}$, the mass $m_{d}$ and the cost $c_{d}$ of all the devices are assumed to be known. $c$ includes the cost for batteries, robot hull and the ballast. $c_{max}$ is the budget for constructing the robot. $V$ denotes the volume of the robot, $V_{bat}$ is the volume of all batteries and the $V_{ballast}$ is the volume of the ballast material. $E_{min}$ is the requirement for minimal energy storage, $V,V_{bat},V_{d},m_{d},c_{d},c,c_{max},E_{min}\in \mathbb{R}^{+}$.    
+\subsection{Buoyancy Neutral Optimization}
+Buoyancy neutral is the primal design goal, the buoyancy $B$ can be calculated as
+\begin{align}
+B=\rho_{f}g~\pi r_{H}^{2}l_{H},
+\end{align}
+where $\rho_{f}$ is the fluid density, $r_{H}$ and $l_{H}$ are the radius and length of the cylindrical hull, respectively. 
+
+Suppose the thickness of the hull is $t_{H}$ and the density of the hull material is $\rho_{H}$, the density of the air is $\rho_{air}$. The weight of each battery is $m_{bat}$. The battery weight is calculate as
+\begin{align}
+W_{bat}=n_{bat}m_{bat}g,
+\end{align}
+The hull profile surface weight is   
+\begin{align}
+W_{pfl}=\pi(r_{H}^{2}-(r_{H}-t_{H})^{2})l_{H}\rho_{H}g,
+\end{align}
+The robot hull end caps weight is 
+\begin{align}
+W_{caps}=2\pi r_{H}^{2} t_{H} \rho_{H}g,
+\end{align}
+The air weight is
+\begin{align}
+W_{air}=((\pi(r_{H}-t_{H})^{2})l_{H}-V_{bat}-V_{d})\rho_{air},
+\end{align}
+The ballast weight is
+\begin{align}
+W_{ballast}=m_{ballast}g,
+\end{align}
+The total weight is
+\begin{align}
+W=W_{bat}+W_{pfl}+W_{caps}+W_{air}+W_{ballast}.
+\end{align}
+We want to make the total weight $W$ equal the buoyancy $B$, thus we minimize their squared difference $(B-W)^{2}$ with large weighting coefficient $\mu_{BN}$.
+
+The ideal result for the buoyancy neural optimization is that there is no 
+difference between the buoyancy and the gravity, i.e., $B=W$. However, it does not mean the restoring term disappears and the kinematic states have no influence on the dynamics states. When the buoyancy $B$ equals the gravity $W$, the term $\vec{g}_{\vec{v}}(\vec{\eta})$ (\ref{EQ:RestoringV}) will equal zero. It implies the restoring forces do not influence the surge, sway and heave velocity. However, based on~\ref{EQ:RestoringW}, the angular velocities will be influenced by the buoyancy and the gravity, as long as the center of gravity $\vec{r}_{g}$ is not coincided with the center of buoyancy $\vec{r}_{b}$. 
+\subsection{Metrics for Hull Design}
+In addition to the buoyancy neutral property, we also have other specifications which should be written into the optimization objective.
+Firstly, we want to maximize the energy storage of the robot, thus we want to increase the number of batteries,
+\begin{align}
+M_{energy}=-\mu_{energy}n_{bat},
+\end{align}
+where $\mu_{energy}$ is the weighting coefficient for energy storage.
+
+The robot mainly moves along the surge direction, to extend the working time, less effort should be used to overcome the drag from the surge. It can also save the power consumption. Thus, we want to minimize the surge drag, and the surge drag is proportional to the frontal area of the hull. We define the surge minimizing term as
+\begin{align}
+M_{drag}=\mu_{surge}r_{H}^{2},
+\end{align}
+where the $\mu_{surge}$ is the weighting coefficient for minimizing the surge drag.
+At last, we want to construct the robot with less cost, thus we want to minimize all the decision variables.
+\begin{align}
+M_{cost}=\mu_{cost,l}l_{H}+\mu_{cost,r}r_{H}+\mu_{cost,bat}n_{bat}
++\mu_{cost,ballast}m_{ballast},
+\end{align}
+where $\mu_{cost,l}$, $\mu_{cost,r}$, $\mu_{cost,bat}$ and $\mu_{cost,ballast}$ are weighting coefficients for minimizing the cost.
+\subsection{Hull Optimization Constraints}
+As mentioned above, the first two constraints are linear due to the requirement that the robot hull should contain the electronic devices. The third constraint means that the total energy storage $n_{bat}E_{bat}$ should at least exceed the minimal energy storage requirement $E_{min}$ which is also linear. The fourth constraint indicates that the construction cost of robot hull enclosure, the cost for buying batteries, ballast and devices should be kept within the budget. Assume the cost for unit volume hull enclosure is constant, then this term is nonlinear due to the existence of decision variable product $r_{H}^{2}l_{H}$ for calculating the volume. It is the same case for the nonlinearity in the last constraint. It means that the hull enclosure should be able to contain all the components except for the actuators.   
+\subsection{Solving the Optimization Problem}
+Based on the formulation on the previous sections, we can see that in our hull optimization objective function, there exists products of two decision variables. Hence the objective is nonlinear. As analysed in the previous section, the last two constrains are nonlinear, too. Moreover, we have continuous decision variables $l_{H}$, $r_{H}$, $m_{ballast}$ and the discrete decision variable $n_{bat}$. 
+
+To sum up, in order to get a feasible solution for our hull optimization, we should formulate it as Mixed Integer Nonlinear Optimization (MINLP) which can be solved by the free MATLAB Toolbox for Optimization called OPTI  Toolbox~\cite{CW12a}.
+
+Note that for MINLP, we can only find the local minimum by means of the solver, thus the initial value is of importance. By testing the optimization codes, we found that, especially the discrete decision variable $n_{bat}$ influences the optimization result obviously. So we choose the initial value of $n_{bat}$ as follows:
+\begin{align}
+n_{bat,init}=\ceil{\dfrac{E_{min}}{E_{bat}}}.
+\end{align}  
+The other initial values of continuous decision variables can be set to zero, as they will not influence the optimization result. 
+
+After we get the optimal value $\mathfrak{d}_{H}^{opt}$ of the hull components, we know the size of the hull. Then, we can calculate all the hydrodynamic coefficients, the mass of the hull $m_{H}$, the moment of inertia of the hull $\emph{\textbf{I}}_{g,H}$, the center of gravity of hull in the body frame $\vec{r}_{g,H}$. All of these are kept constant in the next optimization stage.
+\section{Optimization of Actuator Configuration}
+
+% algorithm for optimization of actuators-only thrusters 
+\IncMargin{1em}
+\begin{algorithm}
+\SetAlgoLined
+\SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+\SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
+\Input{Initial geometric variables $\vec{d}_{T,1}, \cdots, \vec{d}_{T,n_{t}}$,$\vec{r}_{T,1}, \cdots, \vec{r}_{T,n_{t}}$, $x_{F,1}, \cdots, x_{F,n_{f}}$, $\gamma_{F,1}, \cdots, \gamma_{F,n_{f}}$, user-defined breaking constant $\epsilon$, configuration selection range $k_{final}$, maximal allowed iterations $k_{max}$} 
+\Output{Optimized actuator configuration geometry variables:
+$\vec{d}_{T,1}^{opt}, \cdots, \vec{d}_{T,n_{t}}^{opt}$,$\vec{r}_{T,1}^{opt}, \cdots, \vec{r}_{T,n_{t}}^{opt}$, $\vec{b}_{T}^{opt}=(b_{T,1}^{opt}, \cdots, b_{T,n_{t}}^{opt})^{T}$, $x_{F,1}^{opt}, \cdots, x_{F,n_{f}}^{opt}$, $\gamma_{F,1}^{opt}, \cdots, \gamma_{F,n_{f}}^{opt}$, \\Optimized error dynamics $\emph{\textbf{A}}_{E,1}^{opt}, \ldots, \emph{\textbf{A}}_{E,m}^{opt}$ and $\emph{\textbf{B}}_{E,1}^{opt}, \ldots, \emph{\textbf{B}}_{E,m}^{opt}$ for each trim \\trajectory,\\ Control gains $\mathcal{K}_{1}, \cdots, \mathcal{K}_{m}$}
+\BlankLine
+\emph{// Calculate the initial parameters}\;
+\emph{Calculate the initial geometric center $\vec{r}_{G}$}\;
+\emph{Calculate the initial rigid body inertia matrix $\emph{\textbf{M}}_{RB}$}\;
+\emph{Calculate the desired generalized forces $\vec{\tau}_{d,\mathcal{T}_{j}}, j=1, \ldots, m$ for each trim trajectory}\
+\BlankLine
+\emph{// Determine the spin direction $b_{T,i}$}\;
+bestConditionNumber $\longleftarrow +\infty$\;
+\ForEach{$\vec{b}_{T}$ $\in$ {all $ 2^{n_{t}}$ assignments to {$b_{i}$}}} 
+{
+\emph{Compute error dynamics system and input matrices $\emph{\textbf{A}}_{E,1}, \ldots, \emph{\textbf{A}}_{E,m}$, $\emph{\textbf{B}}_{E,1}, \ldots, \emph{\textbf{B}}_{E,m}$ and the controllability matrix $\emph{\textbf{C}}_{E,1}, \ldots, \emph{\textbf{C}}_{E,m}$ for each trim trajectory}\;
+\emph{Compute the condition number $\mathcal{C}_{s}(\emph{\textbf{C}}_{E,j}), s=1, \cdots, 2^{n_{t}}, j=1, \cdots, m$~for each trim trajectory under the s-th spin configuration}\;
+\emph{Compute the average condition number $\mathcal{C}_{av,s}=\dfrac{1}{m}\sum_{j=1}^{m}\mathcal{C}_{s}(\emph{\textbf{C}}_{E,j})$}\;
+}
+\emph{Choose the optimal spin configuration $\vec{b}_{T}(s_{min})$} corresponding to the smallest average condition number, where $s_{min}=\displaystyle \argmin_{s}\mathcal{C}_{av,s}, s=1, \cdots, 2^{n_{t}}$\;
+\emph{// Main Loop for optimization}\;
+\While{at the k-th iteration, the total number of iterations $k_{total}$ is smaller than $k_{max}$}{
+\emph{Optimize $\vec{u}^{*}_{1}, \cdots, \vec{u}^{*}_{m}$ by solving a convex optimization problem}\;
+\emph{Optimize $\vec{r}_{T,1}, \cdots, \vec{r}_{T,n_{t}}$ and $x_{F,1}, \cdots, x_{F,n_{f}}$ by solving a nonlinear optimization problem}\;
+\emph{Optimize $\vec{d}_{T,1}, \cdots, \vec{d}_{T,n_{t}}$ sequentially from QCQP relaxation}\;
+\emph{Optimize $\gamma_{F,1}, \cdots, \gamma_{F,n_{f}}$ sequentially by solving a nonlinear optimization problem}\;
+\emph{Compute error dynamics system and input matrices $\emph{\textbf{A}}_{E,1}, \ldots, \emph{\textbf{A}}_{E,m}$, $\emph{\textbf{B}}_{E,1}, \ldots, \emph{\textbf{B}}_{E,m}$ and the controllability matrix $\emph{\textbf{C}}_{E,1}, \ldots, \emph{\textbf{C}}_{E,m}$ for each trim trajectory}\;
+\If{$\emph{\textbf{C}}_{E,j}, j=1, \ldots, m$ is singular {\bf or} $\dfrac{1}{m}\sum^{m}_{j=1}||\emph{\textbf{C}}_{E,j}^{k}-\emph{\textbf{C}}_{E,j}^{k-1}||<\epsilon$}{
+\emph{Optimization terminates};
+}
+\emph{Update the center of gravity $\vec{r}_{G}$}\;
+\emph{Update the rigid body inertia matrix $\emph{\textbf{M}}_{RB}$}\;
+\emph{Update the desired input $\vec{\tau}_{d,\mathcal{T}_{j}}, j=1, \ldots, m$ for each trim trajectory}\;
+}
+%\emph{// Postprocessing}\;
+%\emph{Choose the  $\vec{r}_{T,1}^{k-1}, \cdots, \vec{r}_{T,n}^{k-1}$, $\vec{d}_{T,1}^{k-1}, \cdots, \vec{d}_{T,n}^{k-1}$, $\vec{b}_{T}(s_{min})$ as the optimal geometric variables. Update the center of gravity with $\vec{r}_{G}^{k-1}$ and the inertia mass matrix with $\emph{\textbf{M}}_{RB}^{k-1}$}. Update the the desired generalized forces $\vec{\tau}_{d,j}^{k-1}, j=1, \ldots, m$\;
+%\emph{Choose $\mathcal{Q}_{E,1}, \cdots, \mathcal{Q}_{E,m}$ and $\mathcal{R}_{E,1}, \cdots, \mathcal{R}_{E,n}$ based on  linearized error dynamics $\emph{\textbf{A}}_{E,1}^{k-1}, \ldots, \emph{\textbf{A}}_{E,m}^{k-1}$ and $\emph{\textbf{B}}_{E,1}^{k-1}, \ldots, \emph{\textbf{B}}_{E,m}^{k-1}$}\;
+%\emph{Compute $\mathcal{K}_{1}, \cdots, \mathcal{K}_{m}$.}\\
+%\caption{Actuator Configuration Optimization Algorithm}\label{algo_actuator_optimization}
+\end{algorithm}
+\DecMargin{1em}
+\IncMargin{1em}
+\begin{algorithm}
+\SetAlgoLined
+\SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}
+\SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}
+\emph{// Postprocessing}\;
+\emph{Calculate the optimal configuration index $k_{opt}=\displaystyle \argmin_{k}\mathcal{C}_{av,k}$, where $\mathcal{C}_{av,k}=\dfrac{1}{m}\sum_{j=1}^{m}\mathcal{C}_{k}(\emph{\textbf{C}}_{E,j}), k=k_{total}-k_{last}, \cdots, k_{total}-1$}\;
+\emph{Choose the optimal directions of the thrusters: 
+$\vec{d}_{T,1}^{opt}=\vec{d}_{T,1}(k_{opt}), \cdots,\vec{d}_{T,n_{t}}^{opt}=\vec{d}_{T,n_{t}}(k_{opt})$}\;
+\emph{Choose the optimal positions of the thrusters: 
+$\vec{r}_{T,1}^{opt}=\vec{r}_{T,1}(k_{opt}), \cdots,\vec{r}_{T,n_{t}}^{opt}=\vec{r}_{T,n_{t}}(k_{opt})$}\;
+\emph{Choose the optimal fin geometric centers: 
+$x_{T,1}^{opt}=x_{T,1}(k_{opt}), \cdots,x_{T,n_{f}}^{opt}=x_{T,n_{f}}(k_{opt})$}\;
+\emph{Choose the optimal fin rotation angles: 
+$\gamma_{T,1}^{opt}=\gamma_{T,1}(k_{opt}), \cdots,\gamma_{T,n_{f}}^{opt}=\gamma_{T,n_{f}}(k_{opt})$}\;
+\emph{Update the the desired generalized forces $\vec{\tau}_{d,\mathcal{T}_{j}}^{opt}, j=1, \ldots, m$}\;
+\emph{Update the the desired control inputs $\vec{u}_{d,j}^{opt}=(\emph{\textbf{B}}_{a}^{opt})^{-1}\vec{\tau}_{d,j}, j=1, \ldots, m$}\;
+\emph{Calculate the optimal linearized error dynamics $\emph{\textbf{A}}_{E,1}^{opt}, \ldots, \emph{\textbf{A}}_{E,m}^{opt}$ and $\emph{\textbf{B}}_{E,1}^{opt}, \ldots, \emph{\textbf{B}}_{E,m}^{opt}$}\;
+\emph{Choose $\mathcal{Q}_{E,1}, \cdots, \mathcal{Q}_{E,m}$ and $\mathcal{R}_{E,1}, \cdots, \mathcal{R}_{E,n}$ }\;
+\emph{Compute $\mathcal{K}_{1}, \cdots, \mathcal{K}_{m}$.}\\
+\BlankLine
+\BlankLine
+\BlankLine
+\caption{Actuator Configuration Optimization Algorithm}\label{algo_actuator_optimization2}
+\end{algorithm}
+\DecMargin{1em}
+%\noindent\makebox[\linewidth]{\rule{\paperwidth}{0.4pt}}
+The main concern of this work is to derive an optimal configuration of actuators by means of an optimization algorithm. 
+Suppose we have $m$ desired trim trajectories and $n$ actuators, the basic idea behind the optimization is always to place all actuators in such a way that all trim trajectories can be perfectly tracked with the least control effort. Suppose there are $n_{t}$ thrusters and $n_{f}$ fins, the input vector $\vec{u}$ can be written as
+\begin{align}
+\vec{u}=\begin{pmatrix}
+u_{T,1}\\ \vdots \\ u_{T,n_{t}} \\ \delta_{F,1} \\ \vdots \\ \delta_{F,n_{f}}
+\end{pmatrix},
+\end{align}
+where $u_{T,1},\ldots,u_{T,n_{t}}$ are thrusts generated by $n_{t}$ thrusters, and $\delta_{F,1},\ldots,\delta_{F,n_{f}}$ are deflection angles of $n_{f}$ fins. The input matrix
+$ \emph{\textbf{B}}_{a}$ maps the input vector into generalized force in 6-degrees of freedom, which is concatenated by the corresponding geometry-determined
+\begin{center}
+\rule{\linewidth}{0.1mm}
+\end{center} 
+mapping vector of each fin and thruster. It is defined as   
+\begin{align}
+ \emph{\textbf{B}}_{a}=\begin{pmatrix}
+\emph{\textbf{B}}_{T,1}&\ldots&\emph{\textbf{B}}_{T,n_{t}}&\emph{\textbf{B}}_{F,1}&\ldots 
+\emph{\textbf{B}}_{F,n_{f}}
+\end{pmatrix}. 
+\end{align}
+Mathematically, the optimization problem can be written as  
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \qquad \qquad \min_{\vec{u}^{*}_{1}, \cdots, \vec{u}^{*}_{m},\mathfrak{d}_{P},\mathfrak{d}_{F}}  \sum_{j=1}^{m}||\emph{\textbf{B}}_{a}\vec{u}^{*}_{j}-\vec{\tau}_{d,j}||^{2}_{2} \\
+\textrm{s.t.}  \quad \vec{d}_{T,i}^{T} \vec{d}_{T,i} =  1, &i=1, \cdots, n_{t} \\
+b_{T,i} \in \lbrace -1,1 \rbrace, &i=1, \cdots, n_{t} \\
+-l_{H}/2\leq \vec{r}_{T,i}(1) \leq l_{H}/2, &i=1, \cdots, n_{t} \\
+\vec{r}_{T,i}(2)^{2}+\vec{r}_{T,i}(3)^{2} =r_{H}^{2}, &i=1, \cdots, n_{t} \\
+ -(l_{H}-b_{F,i})/2\leq x_{F,i} \leq (l_{H}-b_{F,i})/2, &i=1, \cdots, n_{f} \\
+ -\pi /2\leq \gamma_{F,i} \leq \pi/2, &i=1, \cdots, n_{f} \\
+ \vec{u}_{min}\leq \vec{u}_{j}^{*}  \leq \vec{u}_{max}, &j=1, \cdots, m
+\end{array} \label{EQ:OPT}
+\end{equation}
+The product of $\emph{\textbf{B}}_{a}$ and $\vec{u}_{j}^{*}$ causes coupling between the control inputs and the geometric decision variables. Moreover, there exists both convex and non-convex constraints. Directly solving this optimization problem is impossible. Based on the modeling methods of thrusters and fins in chapter 2, optimizing all geometric parameters of actuators at the same time are nearly unsolvable. According to the idea from~\cite{Du2016}, we adopt an iterative method to optimize all geometric parameters and the control input vector in sequence. That is, we divide the decision variables into four groups: the spin direction of all thrusters $b_{T,1}, \cdots, b_{T,n}$, the control inputs $\vec{u}^{*}_{1}, \cdots, \vec{u}^{*}_{m}$, the position of thrusters and fins including $\vec{r}_{T,1}, \cdots, \vec{r}_{T,n_{t}}$ and $x_{F,1}, \cdots, x_{F,n_{f}}$ and the direction (orientation) of thrusters and fins $\vec{d}_{T,1}, \cdots, \vec{d}_{T,n_{t}}$ and $\gamma_{F,1}, \cdots, \gamma_{F,n_{f}}$. The spin direction of all thrusters should be determined at first according to the average condition numbers of all trim trajectories. Once they are determined, for other optimization phases, we keep them constant. The other three decision variables will be optimized in sequence. In one optimization iteration, we set all other groups of decision variables as fixed and just optimize the control inputs at first. At the second optimization stage, the positions of all thrusters and fins will be optimized, while we treat control inputs and directions as constant. As in the previous two optimization phases, control inputs and positions will be set unchanged for the third-stage optimization. Unlike the previous two optimization stages where all control inputs and all positions are optimized simultaneously, we are only able to optimize the direction (orientation) vector of one thruster (fin), while the directions (orientations) of other thrusters (fins) are fixed. After one direction (orientation) vector is optimized, we proceed until all directions (orientations) are optimized. One iteration step ends after all these sub-optimization problems are finished. In the following sections, the details of this algorithms will be discussed.
+\subsection{Initialization}
+We apply nonlinear programming to solve the position and direction optimization. The nonlinear optimization algorithms can only find the local minimum which is strongly dependent on the initial value. The initial guess will influence the result considerably. One option is to set the initial values according to an expert's pre-knowledge of robot design. Our motivation for this work is to find a computational approach allowing non-experts to design, explore, and evaluate a wide range of different underwater robots. From their perspective, we randomly generate the thruster motor direction $\vec{d}_{T}$ , the thruster position $\vec{r}_{T}$, the fin geometric center position $x_{F}$ and the fin orientation $\gamma_{F}$. 
+
+Note that the direction vector $\vec{d}_{T}$ is constrained as unit vector which breaks the convexity. To generate a unit direction vector, we use the following steps:
+\begin{itemize}
+\item Choose a random value of $\theta_{T}$ between $-\pi$ and $\pi$;
+\item Choose a random value of $z$ between -1 and 1;
+\item Compute the resulting point : $(d_{x}, d_{y}, d_{z})=(\sqrt{1-z^{2}}\cos(\theta_{T}), \sqrt{1-z^{2}}\sin(\theta_{T}), z)$
+\end{itemize}
+
+The thruster position $\vec{r}_{T}=(x_{T}, y_{T}, z_{T})^{T}$ is supposed to be located on the hull cylinder surface. Thus, the x-component should not exceed the hull length, and $x_{T}$ should be randomly generated within the range $[-l_{H}/2,l_{H}/2]$. Since the thrusters are attached on the hull surface, the y-component and z-component are constrained by $y_{T}^{2}+z_{T}^{2}=r_{H}^{2}$. Thus, we can randomly generate the angle $\rho_{T}$ within the range $[-\pi,\pi]$, then $y_{T}=r_{H}\cos(\rho_{T})$ and $z_{T}=r_{H}\sin(\rho_{T})$.
+
+Besides, we should choose $x_{F}$ and $\gamma_{F}$ from $[-(l_{H}-b_{F})/2,(l_{H}-b_{F})/2]$  at random, respectively. 
+\subsection{Spin Direction Optimization}
+Unlike the other continuous geometric decision variables, the spin directions $b_{T,1}, \cdots, b_{T,n_{t}}$ of thrusters are discrete decision variables which can be chosen from $\lbrace -1, 1 \rbrace$. Thus we want to choose the most appropriate spin direction configuration before the main optimization loops. For $n_{t}$ thrusters, we have $2^{n_{t}}$ spin configurations to select. The condition number can be used as an input-output controllability measure. A small condition number is aimed for, because the multivariable effects of uncertainty are not likely to be serious~\cite{Skogestad2005}. Thus we choose the condition number of the error dynamics controllability matrix as the measure for selecting spin directions. 
+
+Since we have $m$ different trim trajectories, one spin direction configuration may be very suitable for one trim trajectory segment but work badly for the others. To solve this problem, for each spin direction configuration, we calculate the average condition number of all trim trajectories for each spin configuration. Then we compare them and choose the spin directions corresponding to the smallest average condition number as the optimal ones. They will be set as fixed for further optimizations. 
+\begin{align}
+\vec{b}_{T}^{opt}=\vec{b}_{T}(s_{min}),
+\end{align}
+and
+\begin{align}
+s_{min}=\displaystyle \argmin_{s}\mathcal{C}_{av,s}, 
+\end{align}
+where $\mathcal{C}_{av,s}=\dfrac{1}{m}\sum_{j=1}^{m}\mathcal{C}_{s}(\emph{\textbf{C}}_{E,j})$ and $s$ is index for the spin direction ($s=1, \cdots, 2^{n_{t}}$).
+\subsection{Control Input Optimization}
+The control input optimization is the first part in the main loop. During this phase, we want to choose the optimal inputs of all actuators by minimizing the difference between the desired generalized force and the generalized force generated by the current actuator configuration for each trim trajectory segment. Since in this situation, we only consider $\vec{u}_{1}^{*}, \cdots, \vec{u}_{m}^{*}$, the optimization problem~\ref{EQ:OPT} can be simplified as
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{\vec{u}^{*}_{1}, \cdots, \vec{u}^{*}_{m}} & \multicolumn{3}{l}{\sum_{j=1}^{m}||\emph{\textbf{B}}_{a}\vec{u}^{*}_{j}-\vec{\tau}_{d,j}||^{2}_{2}} \\
+\textrm{s.t.}
+& \vec{u}_{min}&\leq \vec{u}_{j}^{*} & \leq \vec{u}_{max}, &j=1, \cdots, m
+\end{array} \label{EQ:OPTInput}
+\end{equation}
+The objective function is the sum of least squares which is convex, and the linear constrains for control input vectors are also convex. Thus, it is a convex optimization problem which can be solved by CVX, a package for specifying and solving convex programs~\cite{cvx,gb08}. 
+ 
+\subsection{Position Optimization}
+For position optimization of the actuators we refer to finding the optimal position vector $\vec{r}_{T}$ for thrusters and the optimal geometric center $x_{F}$ for fins in the body frame $\lbrace b \rbrace$. 
+Recall the defined thruster mapping matrix~\ref{EQ:ThrusterMappingVector} and the fin mapping vector~\ref{EQ:FinMappingVector} in Chapter 2. By observing their structures, we infer that the positions only have impact on the generated moments. Thus, we abbreviate the desired trim generalized forces $\vec{\tau}_{d,1}, \cdots, \vec{\tau}_{d,m}$ to the desired trim moments $\vec{m}_{d,1}, \cdots, \vec{m}_{d,m}$.
+
+From equation~\ref{EQ:ThrusterMappingVector} we know that the moments generated by thrusters consist of two parts, i.e., the moment produced by a thruster's rotation $\vec{m}_{T,r}=b_{T}\lambda_{T} u_{T}\vec{d}_{T}$ and the moment due to thrust force $\vec{r}_{T}\times u_{T}\vec{d}_{T}$ relating to our decision variable $\vec{r}_{T}$ in this optimization phase. As mentioned before, due to the implementing of the iterative optimization method, $b_{T}$ and $\vec{d}_{T}$ are constant for position optimization. Thus, we can extract the rotation moment from the desired trim moment,
+\begin{align}
+\vec{m}_{d,j}^{'}=\vec{m}_{d,j}-\sum_{i=1}^{n_{t}}b_{T,i}\lambda_{T} u_{T,i}\vec{d}_{T,i}, ~j=1, \cdots, m
+\end{align}
+Then we obtain a series of quasi-desired moments $\vec{m}_{d,1}^{'},\cdots, \vec{m}_{d,m}^{'}$ for $m$ trim trajectories.
+
+The term $\vec{r}_{T,i}\times u_{T,i}\vec{d}_{T,i}, i=1, \cdots, n_{t}$ for the $i$-th thruster can be reformulated as $- u_{T,i}\vec{d}_{T,i}\times \vec{r}_{T,i}, i=1, \cdots, n_{f}$. We define the position mapping matrix for the $i$-th thruster as
+\begin{align}
+\emph{\textbf{B}}_{pos,i}^{T}=-u_{T,i}\vec{d}_{T,i}\times=
+\begin{pmatrix}
+0&u_{T,i}d_{T,z,i}&-u_{T,i}d_{T,y,i}\\
+-u_{T,i}d_{T,z,i}&0&u_{T,i}d_{T,x,i}\\
+u_{T,i}d_{T,y,i}&-u_{T,i}d_{T,x,i}&0\
+\end{pmatrix} \in \mathbb{R}^{3 \times 3},
+\end{align}
+where the direction vector $\vec{d}_{T,i}=(x_{T,i}, y_{T,i}, z_{T,i})^{T}$ corresponds to the $i$-th thruster and the $u_{T,i}$ is its generated thrust force.
+Then its thrust moment can be calculated as
+\begin{align}
+\vec{m}_{T,i,t}=\emph{\textbf{B}}_{pos,i}^{T}\vec{r}_{T,i},
+\end{align}
+where $\vec{r}_{T,i}=(r_{T,x,i}, r_{T,y,i}, r_{T,z,i})$ represents the position vector of $i$-th thruster in the body frame $\lbrace b \rbrace$.
+
+Similarly, from~\ref{EQ:FinMappingVector}, we extract the last three rows for moment mapping to obtain the moments generated by $i$-th fin for $m$-th trim trajectory segment as:
+\begin{align}
+\vec{m}_{F,i}=
+\begin{pmatrix}
+-\dfrac{1}{2}c_{L}a_{F,i}b_{F,i}Q_{j}(u)(d_{H}+a_{F,i})\\
+c_{L}a_{F,i}b_{F,i}Q_{j}(u)x_{F,i}\sin(\gamma_{F,i})\\
+c_{L}a_{F,i}b_{F,i}Q_{j}(u)x_{F,i}\cos(\gamma_{F,i}),
+\end{pmatrix}\delta_{F,i},
+\end{align}
+where $a_{F,i}$ and $b_{F,i}$ are the length and width of the $i$-th fin, respectively. $x_{F,i}$ is the x-coordinate of the $i$-th fin in the body frame $\lbrace b \rbrace$ and $\gamma_{F,i}$ is the rotation angle of the $i$-th fin. $Q_{j}(u)=0.5\rho u_{\mathcal{T},j}^{2}$, where the $u_{\mathcal{T},j}$ is the desired trim surge velocity for the j-th trim trajectory segment. 
+Reforming it, we obtain
+\begin{align}
+\vec{m}_{F,i}=
+\begin{pmatrix}
+-\dfrac{1}{2}c_{L}a_{F,i}b_{F,i}Q_{j}(u)(d_{H}+a_{F,i})\delta_{F,i}&0&0\\
+0&c_{L}a_{F,i}b_{F,i}Q_{j}(u)\sin(\gamma_{F,i})\delta_{F,i}&0\\
+0&0&c_{L}a_{F,i}b_{F,i}Q_{j}(u)\cos(\gamma_{F,i})\delta_{F,i}
+\end{pmatrix}
+\begin{pmatrix}
+1\\x_{F,i}\\x_{F,i}
+\end{pmatrix}.
+\end{align}
+We define the three-dimensional quasi-position vector $\vec{r}_{F,i}$ for the $i$-th fin as:
+\begin{align}
+\vec{r}_{F,i}=\begin{pmatrix}
+1\\x_{F,i}\\x_{F,i}
+\end{pmatrix},
+\end{align}
+where $-\dfrac{1}{2}(l_{H}-b_{F,i})\leq x_{F} \leq \dfrac{1}{2}(l_{H}-b_{F,i})$. Then, we define the position mapping matrix for the $i$-th fin of $j$-th trim trajectory segment as
+\begin{align}
+&\emph{\textbf{B}}_{pos,i,\mathcal{T}_{j}}^{F}= \nonumber \\
+&\begin{pmatrix}
+-\dfrac{1}{2}c_{L}a_{F,i}b_{F,i}Q_{j}(u)(d_{H}+a_{F,i})\delta_{F,i}&0&0\\
+0&c_{L}a_{F,i}b_{F,i}Q_{j}(u)\sin(\gamma_{F,i})\delta_{F,i}&0\\
+0&0&c_{L}a_{F,i}b_{F,i}Q_{j}(u)\cos(\gamma_{F,i})\delta_{F,i}
+\end{pmatrix}.
+\end{align} 
+We also have the similar relationship:
+\begin{align}
+\vec{m}_{F,i}=\emph{\textbf{B}}_{pos,i,\mathcal{T}_{j}}^{F}\vec{r}_{F,i}.
+\end{align}
+
+Recall the constraints concerning the positions: $-l_{H}/2\leq \vec{r}_{T,i}(1) \leq l_{H}/2, i=1, \cdots, n_{t}$, $\vec{r}_{T,i}(2)^{2}+\vec{r}_{T,i}(3)^{2} =r_{H}^{2}, i=1, \cdots, n_{t}$, $-(l_{H}-b_{F,i})/2\leq x_{F,i} \leq (l_{H}-b_{F,i})/2, i=1, \cdots, n_{f}$. The first and third constraint are convex, while the second unit vector constraint breaks the convexity. We want to transform all constraints into convex constraints by means of redefining the position vector of thrusters in the cylindrical frame,
+\begin{align}
+\vec{r}_{T,i,cyl}=
+\begin{pmatrix}
+x_{T,i} \\ r_{H}\cos(\rho_{T,i}) \\ r_{H}\sin(\rho_{T,i})
+\end{pmatrix} \in \mathbb{R}^{3 \times 1}.
+\end{align}
+Based on the previous definitions, we can simplify and reformulate the basic optimization problem as 
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{x_{T,1}, \cdots, x_{T,n_{t}}; x_{F,1}, \cdots, x_{F,n_{f}}; \rho_{T,1}, \cdots, \rho_{T,n_{t}} } & \multicolumn{3}{l}{\sum_{j=1}^{m}\sum_{i=1}^{n}||\emph{\textbf{B}}_{pos,i}^{a}\vec{r}_{a,i}-\vec{m}_{d,j}^{'}||^{2}_{2}} \\
+\textrm{s.t.}
+& l_{H}/2&\leq x_{T,i} & \leq l_{H}/2, &i=1, \cdots, n_{t} \\
+& -\pi&\leq \rho_{T,i} & \leq \pi, &i=1, \cdots, n_{t} \\
+& -(l_{H}-b_{F,i})&\leq x_{F,i} &\leq (l_{H}-b_{F,i}), &i=1, \cdots, n_{f} \\
+\end{array}, \label{EQ:OPTPos}
+\end{equation}
+where the $\vec{r}_{a,i}$ denotes the position vector for the $i$-th actuator. Explicitly, for thrusters $\vec{r}_{a,i}=\vec{r}_{T,cyl,i}$ and for fins $\vec{r}_{a,i}=\vec{r}_{F,i}$. $\emph{\textbf{B}}_{pos,i}^{a}$ represents the corresponding position mapping matrix (for the $i$-th fin along $j$-th trim trajectory: $\emph{\textbf{B}}_{pos,i,\mathcal{T}_{j}}^{F}$, for the $i$-th thruster: $\emph{\textbf{B}}_{pos,i}^{T}$).
+We can stack them together and define the complete position mapping matrix for totally $m$ trim trajectories and $n$ actuators ($n_{t}$ thrusters and $n_{f}$ fins) as 
+\begin{align}
+\emph{\textbf{B}}_{pos}=
+\begin{pmatrix}
+    \emph{\textbf{B}}_{pos,1}^{T} & \cdots & \emph{\textbf{B}}_{pos,n_{t}}^{T}&
+     \emph{\textbf{B}}_{pos,1,\mathcal{T}_{1}}^{F} & \cdots & \emph{\textbf{B}}_{pos,n_{f},\mathcal{T}_{1}}^{F}\\
+     \vdots & \ddots & \vdots&\vdots&\ddots&\vdots \\
+    \emph{\textbf{B}}_{pos,1}^{T} & \cdots & \emph{\textbf{B}}_{pos,n_{t}}^{T}&
+     \emph{\textbf{B}}_{pos,1,\mathcal{T}_{1}}^{F} & \cdots & \emph{\textbf{B}}_{pos,n_{f},\mathcal{T}_{1}}^{F}
+\end{pmatrix}\in \mathbb{R}^{(m\times3)\times (n\times 3)}.
+\end{align} 
+Stacking all the position vectors and defining the position vector $\vec{r}_{pos,a}$ as
+\begin{align}
+\vec{r}_{pos,a}=
+\begin{pmatrix}
+x_{T,1}\\r_{H}\cos(\rho_{T,1})\\r_{H}\sin(\rho_{T,1}) \\ \vdots \\
+x_{T,p}\\r_{H}\cos(\rho_{T,n_{t}})\\r_{H}\sin(\rho_{T,n_{t}})  \\
+1\\x_{F,1}\\x_{F,1}\\ \vdots \\ 1\\x_{F,n_{f}}\\x_{F,n_{f}}
+\end{pmatrix} \in \mathbb{R}^{(n\times 3) \times 1}.
+\end{align}
+Besides, we also stack all the quasi desired moments into the vector
+\begin{align}
+\vec{m}_{pos,a}=
+\begin{pmatrix}
+\vec{m}_{d,1}^{'}\\ \vdots \\ \vec{m}_{d,m}^{'}
+\end{pmatrix}\in \mathbb{R}^{(m\times 3)\times 1}
+\end{align} 
+Our goal is to find an optimal position vector $\vec{r}_{pos,a}$ so that the generated generalized forces by all the actuators approach the desired quasi moments for all trim trajectories as close as possible. Mathematically, we expect
+\begin{align}
+\begin{pmatrix}
+    \emph{\textbf{B}}_{pos,1}^{T} & \cdots & \emph{\textbf{B}}_{pos,n_{t}}^{T}&
+     \emph{\textbf{B}}_{pos,1,\mathcal{T}_{1}}^{F} & \cdots & \emph{\textbf{B}}_{pos,n_{f}}^{F}\\
+     \vdots & \ddots & \vdots&\vdots&\ddots&\vdots \\
+    \emph{\textbf{B}}_{pos,1}^{T} & \cdots & \emph{\textbf{B}}_{pos,n_{t}}^{T}&
+     \emph{\textbf{B}}_{pos,1,\mathcal{T}_{m}}^{F} & \cdots & \emph{\textbf{B}}_{pos,n_{f},\mathcal{T}_{m}}^{F}
+\end{pmatrix} 
+\begin{pmatrix}
+x_{T,1}\\r_{H}\cos(\rho_{T,1})\\r_{H}\sin(\rho_{T,1}) \\ \vdots \\
+x_{T,n_{t}}\\r_{H}\cos(\rho_{T,n_{t}})\\r_{H}\sin(\rho_{T,n_{f}})  \\
+1\\x_{F,1}\\x_{F,1}\\ \vdots \\ 1\\x_{F,n_{f}}\\x_{F,n_{f}}
+\end{pmatrix}=
+\begin{pmatrix}
+\vec{m}_{d,1}^{'}\\ \vdots \\ \vec{m}_{d,m}^{'}
+\end{pmatrix}.
+\end{align}
+We can formulate the optimization problem as 
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{x_{T,1}, \cdots, x_{T,n_{t}}; x_{F,1}, \cdots, x_{F,n_{f}}; \rho_{T,1}, \cdots, \rho_{T,n_{t}}} & \multicolumn{3}{l}{||\emph{\textbf{B}}_{pos}\vec{r}_{pos,a}-\vec{m}_{pos,a}||^{2}_{2}} \\
+\textrm{s.t.}
+& l_{H}/2&\leq x_{T,i} & \leq l_{H}/2, &i=1, \cdots, n_{t} \\
+& -\pi&\leq \rho_{T,i} & \leq \pi, &i=1, \cdots, n_{t} \\
+& -(l_{H}-b_{F,i})&\leq x_{F,i} & \leq (l_{H}-b_{F,i}), &i=1, \cdots, n_{f} 
+\end{array}. \label{EQ:OPTPos}
+\end{equation}
+All constraints are linear convex, while the vector $\vec{r}_{pos,a}$ depends nonlinearly on all decision variables and the objective function is nonlinear least square. Thus this optimization problem should be solved by constrained nonlinear programming. In the first iteration, we choose the randomly generated initial $\vec{r}_{T,1}, \cdots, \vec{r}_{T,n_{t}}$ and convert them into $x_{T,1}, \cdots, x_{T,n_{t}}$ and $\rho_{T,1}, \cdots, \rho_{T,n_{t}}$. Combining them with the randomly generated $x_{F,1}, \cdots, x_{F,n_{f}}$, we can construct our initial guess for $\vec{r}_{pos,a}$. For the other iterations, we utilize the optimization results from the $k-1$ iteration at iteration $k$. 
+
+\subsection{Orientation Optimization}
+%For orientation optimization, each time we just optimize the orientation of one %thruster or fin. To optimize the motor orientation $\vec{d}_{T}$ of the %thrusters, sequential optimization method is used. That is, every time we only %change the motor orientation of one thruster to decrease the total tracking %error. The motor orientations of all other thrusters are fixed in this case. 
+Assume now we optimize the $c$-th thruster orientation $\vec{d}_{T,c}=[d_{x,c} \quad d_{y,c} \quad d_{z,c}]^{T}$
+\begin{align}
+\begin{pmatrix}
+u_{T,c}&0&0\\
+0&u_{T,c}&0\\
+0&0&u_{T,c}\\
+b_{T,c}\lambda_{T,c}u_{T,c}&-z_{T,c}u_{T,c}&y_{T,c}u_{T,c}\\
+z_{T,c}u_{T,c}&b_{T,c}\lambda_{T,c}u_{T,c}&-x_{T,c}u_{T,c}\\
+-y_{T,c}u_{T,c}&x_{T,c}u_{T,c}&b_{T,c}\lambda_{T,c}u_{T,c}
+\end{pmatrix}
+\begin{pmatrix}
+d_{x,c}\\d_{y,c}\\d_{z,c}
+\end{pmatrix}
+=\vec{\tau}^{'}_{d,j},
+\end{align}
+where $\vec{\tau}^{'}_{d,j}=\vec{\tau}_{d,j}-\sum_{i=1,i \neq c}^{n}\vec{\tau}_{a,i,\mathcal{T}_{j}}, j=1, \cdots, m$, i.e., we subtract the sum of generated forces and moments of the other $n-1$ actuators under the current geometric configuration  from the desired generalised force $\vec{\tau}$ for the $m$-th trim trajectory.
+We define the motor orientation optimization matrix $\emph{\textbf{B}}_{ort,c,\mathcal{T}_{j}}^{T}$ for the $c$-th thruster along $j$-th trim trajectory as
+\begin{align}
+\emph{\textbf{B}}_{ort,c,\mathcal{T}_{j}}^{T}=
+u_{T,c}\begin{pmatrix}
+1&0&0\\
+0&1&0\\
+0&0&1\\
+b_{T,c}\lambda_{T,c}&-z_{T,c}&y_{T,c}u_{T,c}\\
+z_{T,c}u_{T,c}&b_{T,c}\lambda_{T,c}u_{T,c}&-x_{T,c}u_{T,c}\\
+-y_{T,c}u_{T,c}&x_{T,c}u_{T,c}&b_{T,c}\lambda_{T,c}u_{T,c}
+\end{pmatrix}.
+\end{align}  
+From this matrix, we can see that the direction optimization matrix is dependent on the thruster input force $u_{T}$ and its geometric parameters $b_{T}$ and $\vec{r}_{T}$. $u_{T}$ is calculated in the first input optimization phase and trajectory-dependent. $\vec{r}_{T}=(x_{T},y_{T},z_{T})^{T}$ is optimized in the second phase. In the current direction optimization phase, we take the optimal values of them from the previous two optimization phases. Then our general optimization in this case can be simplified as
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{\vec{d}_{T,c}} & \multicolumn{3}{l}{\sum^{m}_{i=1}||\emph{\textbf{B}}_{ort,c,\mathcal{T}_{j}}^{T}\vec{d}_{T,c}-\vec{\tau}_{d,m}^{'}||^{2}_{2}} \\
+\textrm{s.t.}
+& \vec{d}_{T,c}^{T}\vec{d}_{T,c}&=1
+\end{array}. \label{EQ:ThrusterOrtOpt}
+\end{equation}
+The objective function is a sum of least squares and convex, however the constraint $\vec{d}_{T,c}^{T}\vec{d}_{T,c}=1$ breaks the convexity. This optimization problem should also be solved by nonlinear programming. Therefore, the initial value plays a decisive role for the solution. A reasonable relaxation is to convert the equality constraint $\vec{d}_{T,c}^{T}\vec{d}_{T,c}=1$ into an inequality constraint $\vec{d}_{T,c}^{T}\vec{d}_{T,c}\leq 1$. Then the optimization problem becomes a quadratically constrained quadratic program (QCQP):
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{\vec{d}_{T,c}} & \multicolumn{3}{l}{\sum^{m}_{j=1}||\emph{\textbf{B}}_{ort,c,\mathcal{T}_{j}}^{T}\vec{d}_{T,c}-\vec{\tau}_{d,m}^{'}||^{2}_{2}} \\
+\textrm{s.t.}
+& \vec{d}_{T,c}^{T}\vec{d}_{T,c}&\leq1
+\end{array}. \label{EQ:ThrusterOrtOptRelaxation}
+\end{equation}
+It is a convex programming problem having a global minimum that can be solved by CVX~\cite{cvx,gb08}. This global minimum will be chosen as the initial value for the original nonlinear optimization problem~\ref{EQ:ThrusterOrtOpt}.
+ 
+In terms of optimizing the orientation of fins, we adopt the same approach. Firstly, we reformulate equation~\ref{EQ:FinMappingVector} and extract a vector including only the orientation of the current optimized fin.
+\begin{align}
+\vec{\tau}_{F,c,\mathcal{T}_{j}}=c_{L}a_{F,c}b_{F,c}q_{j}(u)\delta_{F,c}
+\begin{pmatrix}
+0 \\ \cos(\gamma_{F,c}) \\ -\sin(\gamma_{F,c}) \\ -\dfrac{1}{2}(d_{H}+a_{F,c}) \\ x_{F,c}\sin(\gamma_{F,c}) \\ x_{F,c}\cos(\gamma_{F,c})
+\end{pmatrix}.
+\end{align}
+Note that the fin deflection angle $\delta_{F,c}$ is from the result in the control input optimization phase. 
+
+Then we can formulate the optimization problem 
+
+\begin{equation}
+\begin{array}{ccclcl}
+\displaystyle \min_{\gamma_{F,c}} & \multicolumn{3}{l}{\sum_{j=1}^{m}||\vec{\tau}_{F,c,\mathcal{T}_{j}}-\vec{\tau}_{d,j}^{'}||^{2}_{2}} \\
+\textrm{s.t.}
+& -\pi&\leq \gamma_{F,c} & \leq \pi 
+\end{array}. \label{EQ:FinOrtOpt}
+\end{equation}
+
+This is sum of nonlinear squares with linear constraints which is not convex. We should use nonlinear optimization to solve this problem. For the initial value, we utilize the same method as in the position optimization. For the first iteration, we take the randomly generated fin orientation within $[-\pi, \pi]$ as the initial guess, whereas for other iterations we use the result from the last iteration as the initial value.
+
+\subsection{Termination Criteria and Convergence Discussion} 
+The basic criteria for breaking the iterative loop is the loss of controllability for a certain configuration. By testing the real optimization codes with 6 thruster and with 2 thrusters and 4 fins, we found that the controllability will not be broken within a large number of iterations. However, all geometric parameters of actuators have already stayed nearly constant. Therefore, we propose another criteria to break the optimization loop. Because the controllability matrix $\emph{\textbf{C}}_{E}$ is uniquely related to the system matrix $\emph{\textbf{A}}_{E}$ and the input matrix $\emph{\textbf{B}}_{E}$ and these two matrices are bijective functions of geometric decision variables $\mathfrak{d}_{P}$ and $\mathfrak{d}_{F}$, we can use the increase of $\mathit{l}_{2}$ norm of error dynamics controllability matrices $||\emph{\textbf{C}}_{E}^{k}-\emph{\textbf{C}}_{E}^{k-1}||$ to indicate the convergence of actuator geometric decision variables. Since we have $m$ trim trajectories, we take the average of all norm incremental amount $\dfrac{1}{m}\sum^{m}_{j=1}||\emph{\textbf{C}}_{E,j}^{k}-\emph{\textbf{C}}_{E,j}^{k-1}||$, if it is smaller than a user-predefined small constant $\epsilon$, the optimization will end. The choice of a suitable value $\epsilon$ is not simple. For some randomly generated initial geometric variables, the average norm difference can decrease within the value in tens of iterations, while for some other configuration it can not fall down into the $\epsilon$ even though in hundreds of iterations which takes long time. However, in these cases, the average norm difference actually already stay stable (oscillating within a quite small range) for many iterations. It means that $\epsilon$ is set too small that the average norm difference can never reach. Hence, we set the maximal iterations to avoid redundant iterations. A better alternative to solve this problem is that we choose $\epsilon$ according to the initial average norm of all trim trajectory error dynamics controllability matrices $\emph{\textbf{C}}_{E,av,init}=\dfrac{1}{m}\sum_{j=1}^{m}||\emph{\textbf{C}}_{E,j}^{1}||$. For instance, if $\emph{\textbf{C}}_{E,av,init}$ is in the order of $10^{5}$, we can set $\epsilon$ as 100.
+\subsection{Postprocessing}
+%Recall the main optimization phases, at each iteration, we minimize the tracking errors for all $m$ trim trajectories. Thus, if the main loop breaks at the iteration $k_{final}$, the total tracking errors at step ($k_{final}-1$) should be the smallest for all ($k_{final}-1$) iterations.
+Once one of the breaking criteria described in the last subsection is satisfied, the main loop searching for a local optimal actuator configuration will be terminated. Suppose we have totally $k_{total}$ optimization iterations, selecting the most optimal one is of significance. As in the spin direction optimization phase, the spin direction configuration with smallest average condition number of the error dynamics controllability matrices along all trim trajectories will be treated as the best one. Smaller condition number means better ability against uncertainties. The kinematic tracking is the first concern for the robot working performance. By observing the implementation results, we find that there is no obvious difference between the tracking error in the very last steps. Hence, we can combine these two points. For the last $k_{last}$ iterations (iterations $k_{total}-k_{last}, \cdots, k_{total}-1$), we choose the geometric variables at iteration $k_{opt}$ with the smallest average condition number of $m$ trim trajectories error dynamics controllability matrices, i.e., 
+\begin{align}
+k_{opt}=\displaystyle \argmin_{k}\mathcal{C}_{av,k}, 
+\end{align} 
+where
+$\mathcal{C}_{av,k}=\dfrac{1}{m}\sum_{j=1}^{m}\mathcal{C}_{k}(\emph{\textbf{C}}_{E,j}), k=k_{total}-k_{last}, \cdots, k_{total}-1$. 
+%\begin{align}
+%\vec{d}_{T,1}^{opt}=\vec{d}_{T,1}(k_{opt}), \cdots, %\vec{d}_{T,p}^{opt}=\vec{d}_{T,p}(k_{opt}),
+%\end{align}
+%\begin{align}
+%\vec{r}_{T,1}^{opt}=\vec{r}_{T,1}(k_{opt}), \cdots, %\vec{r}_{T,p}^{opt}=\vec{r}_{T,p}(k_{opt}),
+%\end{align}
+%\begin{align}
+%x_{F,1}^{opt}=x_{F,1}(k_{opt}), \cdots, x_{F,q}^{opt}=x_{F,q}(k_{opt}), 
+%\end{align}
+%\begin{align}
+%\gamma_{F,1}^{opt}=\gamma_{F,p}^{opt}, \cdots, \gamma_{F,q}^{opt}=\gamma_{F,q}(k_{opt})
+%\end{align}
+  
+Then we choose the geometric variables at iteration $k_{opt}$ as the optimal result. Using these geometric parameters and the modular modeling method elaborated in Chapter 2, we can build the optimal robot dynamics as
+\begin{align}
+&\emph{\textbf{M}}_{RB}^{opt}(\vec{r}_{T}^{opt},\mathfrak{d}_{H}^{opt},\mathfrak{d}_{F}^{opt})\dot{\vec{\upsilon}}+\emph{\textbf{M}}_{A}^{opt}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H}^{opt})\dot{\vec{\upsilon}} \nonumber \\
+&+\emph{\textbf{C}}_{RB}^{opt}(\vec{x}_{dyn,\mathcal{T}},\vec{r}_{T}^{opt},\mathfrak{d}_{H}^{opt},\mathfrak{d}_{F}^{opt})\vec{\upsilon}+ 
+\emph{\textbf{C}}_{A}^{opt}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H}^{opt})\vec{\upsilon}+\emph{\textbf{D}}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H}^{opt})\vec{\upsilon} \nonumber \\
+&+\vec{g}^{opt}(\vec{x}_{kin,\mathcal{T}},\mathfrak{d}_{F}^{opt},\vec{r}_{T}^{opt},\mathfrak{d}_{H}^{opt}) \nonumber \\
+&=\emph{\textbf{B}}_{T}^{opt}(\vec{d}_{T}^{opt},\vec{r}_{T}^{opt},b_{T}^{opt})
+\begin{pmatrix}
+u_{T,1}  \\ \vdots \\ u_{T,n_{t}}
+\end{pmatrix}+
+\emph{\textbf{B}}_{F}^{opt}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{F}^{opt})
+\begin{pmatrix}
+\delta_{F,1}  \\ \vdots \\ \delta_{F,n_{f}}
+\end{pmatrix}.
+\end{align}
+The optimal desired trim input is calculated as
+\begin{align}
+\vec{\tau}_{d,\mathcal{T}}^{opt}=&\emph{\textbf{C}}_{RB}^{opt}(\vec{x}_{dyn,\mathcal{T}},\vec{r}_{T}^{opt},\mathfrak{d}_{H}^{opt},\mathfrak{d}_{F})\vec{\upsilon}_{\mathcal{T}}+ 
+\emph{\textbf{C}}_{A}^{opt}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H}^{opt})\vec{\upsilon}_{\mathcal{T}}+\emph{\textbf{D}}^{opt}(\vec{x}_{dyn,\mathcal{T}},\mathfrak{d}_{H}^{opt})\vec{\upsilon}_{\mathcal{T}} \nonumber \\
+&+\vec{g}^{opt}(\vec{x}_{kin,\mathcal{T}},\mathfrak{d}_{F},\vec{r}_{T}^{opt},\mathfrak{d}_{H}^{opt}).
+\end{align}
+Based on this dynamics, we use the reformulation approach and the nonlinear transformation in chapter 3 to get $m$ linearized error dynamics system matrices $\emph{\textbf{A}}_{E,1}^{opt}, \cdots, \emph{\textbf{A}}_{E,m}^{opt}$ and input matrices $\emph{\textbf{B}}_{E,1}^{opt}, \cdots, \emph{\textbf{B}}_{E,m}^{opt}$ corresponding to $m$ trim trajectories specifications $\mathcal{T}_{1}, \cdots, \mathcal{T}_{m}$. The feedback gain $\mathcal{K}_{1}^{opt}, \cdots, \mathcal{K}_{m}^{opt}$ of the error dynamics will be calculated from these system and input matrices. The error dynamics inputs are:
+\begin{align}
+\vec{u}_{E,1}&=-\mathcal{K}_{1}^{opt}x_{E,1} \nonumber \\
+&\vdots \nonumber \\
+\vec{u}_{E,m}&=-\mathcal{K}_{m}^{opt}x_{E,m}
+\end{align}
+Recall the definition of the error dynamics input $\vec{u}_{E}=\vec{u}-\vec{u}_{\mathcal{T}}$, then we obtain the control inputs giving into the robot system for $m$ trim trajectories $\vec{u}_{1}, \cdots, \vec{u}_{m}$:
+\begin{align}
+\vec{u}_{1}&=\vec{u}_{E,1}+\vec{u}_{\mathcal{T}_{1}}^{opt} \nonumber \\
+&\vdots \nonumber \\
+\vec{u}_{m}&=\vec{u}_{E,m}+\vec{u}_{\mathcal{T}_{m}}^{opt}
+\end{align}
+where $\vec{u}_{\mathcal{T}_{1}}^{opt}, \cdots, \vec{u}_{\mathcal{T}_{m}}^{opt}$ are desired trim inputs from trim trajectory specification which is calculated using~\ref{EQ:UTrimDesired}, i.e., $\vec{u}_{\mathcal{T}_{j}}^{opt}=(\emph{\textbf{B}}_{a}^{opt})^{-1}
+\vec{\tau}_{d,\mathcal{T}_{j}}^{opt}, j=1, \cdots, m$. The tracking performance will be verified in Matlab/Simulink abd discussed in the next chapter.
+
+\subsection{Summary} 
+To sum up, the biggest challenge in this work is the coupling between the three different groups of geometric variables. Each term in the robot dynamics (the inertia matrices, the Coriolis matrices, the damping matrix, the restoring matrix, the input mapping matrix) is determined by several of them. By observing the relationship between each term and these decision variable, see \ref{EQ:DynamikRelationship1}, \ref{EQ:DynamikRelationship2}, \ref{EQ:DynamikRelationship3}, \ref{EQ:DynamikRelationship4}, \ref{EQ:DynamikRelationship5} and \ref{EQ:DynamikRelationship6}, we find out that the decision variables of the robot hull exist in all terms. Thus, we extract $\mathfrak{d}_{H}$ from the decision variables and optimize them firstly. This is what we do in the hull optimization part. For the rest of geometric decision variables, i.e., the control inputs, the positions and orientations of all actuators, we adopt an iterative way to decouple three different groups of them. Each time we only optimize one of the these three variable clusters, while the rest two clusters of decision variables are set to be constant. Note that, the spin directions of all thrusters do not take apart in the main iterative optimization loop since they are discrete decision variables. They will be determined separately before the main loop according to the average condition number. This step is called actuator configuration optimization. 
+
+Three criteria are selected to break the actuator optimization loop:
+\begin{itemize}
+\item The controllability of arbitrary trim trajectory error dynamics is not satisfied.
+\item The specified maximal iteration number is exceeded.
+%\item The average norm of all trim trajectory error dynamics controllability matrix differences $\dfrac{1}{m}\sum^{m}_{i=1}||\emph{\textbf{C}}_{E,j}^{k}-\emph{\textbf{C}}_{E,j}^{k-1}||$ is smaller than a user-predefined value $\epsilon$
+\item $\dfrac{1}{m}\sum^{m}_{i=1}||\emph{\textbf{C}}_{E,j}^{k}-\emph{\textbf{C}}_{E,j}^{k-1}|| < \epsilon$.
+\end{itemize}
+
+Very small average norm means the controllability matrix update themselves within a negligible range and the controllability matrix is only determined by the geometric variables, indicating that the geometric variables can not be optimized anymore.
+
+We use the condition number to pick out the most optimal geometric configuration from the results in the very last $k_{last}$ iterations, because a smaller condition number indicates a better ability to handle uncertainties. Meanwhile, the tracking errors show no obvious difference for the very last $k_{last}$ geometric configurations.
+

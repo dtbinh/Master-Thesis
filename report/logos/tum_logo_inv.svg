@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 13.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 14948)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="53.051px" height="28.35px" viewBox="0 0 53.051 28.35" enable-background="new 0 0 53.051 28.35" xml:space="preserve">
+<g>
+	<defs>
+		<rect id="SVGID_1_" y="0.03" width="53.05" height="28.32"/>
+	</defs>
+	<clipPath id="SVGID_2_">
+		<use xlink:href="#SVGID_1_"  overflow="visible"/>
+	</clipPath>
+	<g clip-path="url(#SVGID_2_)">
+		<defs>
+			<rect id="SVGID_3_" y="0.03" width="53.051" height="28.311"/>
+		</defs>
+		<clipPath id="SVGID_4_">
+			<use xlink:href="#SVGID_3_"  overflow="visible"/>
+		</clipPath>
+		<g clip-path="url(#SVGID_4_)">
+			<defs>
+				<rect id="SVGID_5_" y="0.03" width="53.051" height="28.311"/>
+			</defs>
+			<clipPath id="SVGID_6_">
+				<use xlink:href="#SVGID_5_"  overflow="visible"/>
+			</clipPath>
+			<rect y="0.03" clip-path="url(#SVGID_6_)" fill="#0065BD" width="53.05" height="28.31"/>
+		</g>
+	</g>
+</g>
+<g>
+	<defs>
+		<rect id="SVGID_7_" y="0.03" width="53.05" height="28.32"/>
+	</defs>
+	<clipPath id="SVGID_8_">
+		<use xlink:href="#SVGID_7_"  overflow="visible"/>
+	</clipPath>
+	<g clip-path="url(#SVGID_8_)">
+		<defs>
+			<rect id="SVGID_9_" width="53.051" height="28.35"/>
+		</defs>
+		<clipPath id="SVGID_10_">
+			<use xlink:href="#SVGID_9_"  overflow="visible"/>
+		</clipPath>
+		<g clip-path="url(#SVGID_10_)">
+			<defs>
+				<rect id="SVGID_11_" width="53.051" height="28.35"/>
+			</defs>
+			<clipPath id="SVGID_12_">
+				<use xlink:href="#SVGID_11_"  overflow="visible"/>
+			</clipPath>
+			<path clip-path="url(#SVGID_12_)" fill="#0065BD" d="M53.051,0v28.34H47.21V5.87h-4.989v22.47h-5.84V5.87h-4.91v22.48H15.11V5.63
+				H10.3v22.72H4.7V5.6H0V0.03h20.81v22.61h5.02V0H53.051z M52.381,27.669v-27H26.5v22.64h-6.35V0.7H0.67v4.23h4.7v22.75h4.26V4.97
+				h6.15v22.71h15.021V5.21h6.25v22.459h4.51V5.21h6.32v22.459H52.381z"/>
+			<polygon clip-path="url(#SVGID_12_)" fill="#FFFFFF" points="52.381,0.67 52.381,27.669 47.881,27.669 47.881,5.21 41.561,5.21 
+				41.561,27.669 37.051,27.669 37.051,5.21 30.801,5.21 30.801,27.68 15.78,27.68 15.78,4.97 9.63,4.97 9.63,27.68 5.371,27.68 
+				5.371,4.93 0.67,4.93 0.67,0.7 20.15,0.7 20.15,23.31 26.5,23.31 26.5,0.67 			"/>
+		</g>
+	</g>
+</g>
+</svg>

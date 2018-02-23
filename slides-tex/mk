@@ -1,0 +1,10 @@
+filename=StudentThesis_Template
+latex $filename.tex
+latex $filename.tex
+bibtex $filename
+bibtex $filename
+latex $filename.tex
+latex $filename.tex
+dvips  $filename
+ps2pdf  $filename.ps
+rm $filename.aux *.log $filename.bbl $filename.blg $filename.dvi $filename.ps  $filename.nav  $filename.out  $filename.snm  $filename.toc $filename.lof

@@ -1,0 +1,357 @@
+%_________Einleitung__________________________________
+\chapter{Modular Modelling of Underwater Robot Prototype}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[x=1.5cm,y=1.5cm,>=latex']
+	\coordinate (O) at (0,0);
+	\coordinate (OD) at(0,-1);
+	\draw[dashed] (O) -- (1,0);
+	\draw [->](1,0) -- (2,0) node[right] {$x$};
+	\draw[dashed,-serif cm] (O) -- (0,-1);
+	\draw[dashed,-serif cm] (O) -- (0,1);
+	\draw [->](0,-1) -- (0,-2) node[below right] {$z$};
+	\draw (0,1) circle(1 and 0.3);
+	% \draw (0,-1) circle(1 and 0.3);
+	\draw[dashed] (O) +(0:1) arc[start angle=0,end angle=180,x radius=1,y radius=0.3];
+	\draw[name path=P] (O) +(0:1) arc[start angle=0,end angle=-180,x radius=1,y radius=0.3];
+		\draw[dashed] (OD) +(0:1) arc[start angle=0,end angle=180,x radius=1,y radius=0.3];
+	\draw[name path=PD] (OD) +(0:1) arc[start angle=0,end angle=-180,x radius=1,y radius=0.3];
+	\draw (-1,-1)--(-1,1);
+	\draw (1,-1)--(1,1);
+	\path[name path=P1] (O) -- (-1,-1);
+	\path [name intersections={of=P and P1}];
+	\coordinate (X1) at (intersection-1);
+	\draw[dashed] (O)--(X1);
+	\draw [->](X1) -- (-1.35,-1.35) node[below left] {$y$};
+	\draw [<->] (-1.2,1) -- (-1.2,-1) node [midway, left] {$l_{bat}$};
+	\draw (-1,1.1)--(-1,1.4);
+	\draw (0,1)--(0,1.4);
+    \draw [<->] (-1,1.2) -- (0,1.2) node [midway, below] {$r_{bat}$};
+    	\end{tikzpicture}
+\caption{Modelling of Battery as Solid Cylinder} \label{fig:BatteryModeling}
+\end{figure}
+Batteries are modelled as solid cylinders, based on the defined coordinate in \ref{fig:BatteryModeling}, the mass and moment of inertia are given as
+\begin{align}
+m_{bat}=\rho\pi r_{bat}^{2} l_{bat},
+\end{align}
+\begin{align}
+I_{xx,bat}=I_{yy,bat}=\dfrac{1}{12}m_{bat}(3r_{bat}^{2}+l_{bat}^{2}),
+\end{align}
+and
+\begin{align}
+I_{zz,bat}=\dfrac{1}{2}m_{bat}r_{bat}^{2}
+\end{align}
+
+The hull is modelled as hollow cylinder.
+\begin{figure}
+\centering
+\begin{tikzpicture}[x=1.5cm,y=1.5cm,>=latex']
+	\coordinate (O) at (0,0);
+	\coordinate (OD) at(0,-1);
+	% plot the x-axis
+	\draw[dashed] (O) -- (2,0);
+	\draw[dashed] (O) -- (0,-1);
+	\draw [->](2,0) -- (3,0) node[right] {$x$};
+	\draw[dashed] (O) -- (-2,0);
+	\draw [->](0,-1) -- (0,-2) node[below right] {$z$};
+	\draw (-2,0) circle(0.3 and 1);
+	\draw (-2,0) circle(0.24 and 0.8);
+	\draw [dashed](2,0) circle(0.24 and 0.8);
+	\draw [dashed](0,0) circle(0.24 and 0.8);
+	\draw[dashed] (2,1) arc[start angle=90,end angle=270,x radius=0.3,y radius=1];
+	\draw[name path=P2] (2,1) arc[start angle=90,end angle=-90,x radius=0.3,y radius=1];
+	\draw[dashed] (0,1) arc[start angle=90,end angle=270,x radius=0.3,y radius=1];
+	\draw[name path=P] (0,1) arc[start angle=90,end angle=-90,x radius=0.3,y radius=1];
+	\draw (-2,1)--(2,1);
+	\draw (-2,-1)--(2,-1);
+	\path[name path=PP] (O) -- (1,-1);
+	\path [name intersections={of=P and PP}];
+	\coordinate (X1) at (intersection-1);
+	\draw[dashed] (O)--(X1);
+	\draw [->](X1) -- (1.35,-1.35) node[below left] {$y$};
+	\draw [<->] (-2,1.2) -- (2,1.2) node [midway, above] {$l_{H}$};
+	\draw (-2,1.1)--(-2,1.4);
+	\draw (2,1.1)--(2,1.4);
+	% legend for the radius
+	\draw (-2.1,1)--(-3.5,1);
+	\draw (-2.1,0)--(-3.5,0);
+	\draw (-2.1,0.8)--(-2.9,0.8);
+    \draw [<->] (-3,0) -- (-3,1) node [midway, left] {$r_{H,o}$};
+        \draw [<->] (-2.5,0) -- (-2.5,0.8) node [midway, left] {$r_{H,i}$};
+	\end{tikzpicture}
+\caption{Modelling of Hull as Hollow Cylinder} \label{fig:HullModeling}
+\end{figure}
+\begin{align}
+m_{H}=\rho\pi (r_{H,o}^{2}-r_{H,i}^{2})l_{H},
+\end{align}
+\begin{align}
+I_{xx,H}=\dfrac{1}{2}m_{H}(r_{H,o}^{2}+r_{H,i}^{2}),
+\end{align}
+and
+\begin{align}
+I_{yy,H}=I_{zz,H}=\dfrac{1}{4}m_{H}(r_{H,o}^{2}+r_{H,i}^{2}+\dfrac{l_{H}^{2}}{3})
+\end{align}
+\section{Estimation of the Hydrodynamic Damping of Hull}
+ A geometric shape is rotational symmetric when it remains unchanged after $180^{\circ}$ or less of rotation.  
+ 
+To estimate the drag coefficient of the robot hull, we make the following the assumptions:
+\begin{enumerate}
+\item The drag coefficient is a function of the Reynolds number $Re$, which is defined as
+\begin{align}
+Re=\dfrac{vl}{\nu}.
+\end{align}
+where $v$ is the velocity of the fluid (SI units: $m/s$), $l$ is the characteristic linear dimension ($m$) and $\nu$ is the kinematic viscosity of the fluid ($m^{2}/s$).
+\item The skin friction is neglected. At $20^{\circ}\mathrm{C}$
+\item The lift force of hull is not taken into consideration.
+\item 
+\end{enumerate}
+
+
+
+\section{Geometric Modeling of Robot Body}
+The vehicle is approximated as an ellipsoid characterized by the parametric representation:
+% \begin{align}
+% \dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}}{b^{2}}+\dfrac{z^{2}}{c^{2}}=1
+% \end{align} 
+% where $b=c$ and $a>c$, and the eccentricity $e_{c}=1-(b/a)^{2}$. Then % the ellipsoid can be rewritten as
+% \begin{align}
+% \dfrac{x^{2}}{a^{2}}+\dfrac{y^{2}+z^{2}}{b^{2}}=1
+% \end{align}
+The inertia tensor for each modular component with respect to its center of mass is given by
+\begin{align}
+\vec{I}_{g,i}=
+\begin{pmatrix}
+I_{xx,i}&0&0\\
+0&I_{yy,i}&0\\
+0&0&I_{zz,i}
+\end{pmatrix}.
+\end{align}
+% Being $b=c$ and $a>c$, it can be noticed that a prolate spheroid  
+% The rigid body matrix
+% \begin{align}
+% \emph{\textbf{M}}^{CO}_{RB} &=
+% \begin{pmatrix}
+% m\emph{\textbf{I}}_{3\times 3}&-m\emph{\textbf{S}}(\vec{r}_{g}^{b}) \\
+% m\emph{\textbf{S}}(\vec{r}_{g}^{b})&
+% \emph{\textbf{I}}_{g}-m\emph{\textbf{S}}^{2}(\vec{r}^{b}_{g})
+% \end{pmatrix}
+% \end{align}
+% The eccentricity is defined as 
+% \begin{align}
+% e_{c}=1-(b/a)^{2}
+% \end{align} 
+% \begin{align}
+% \alpha_{0}=\dfrac{2(1-e_{c}^{2})(\dfrac{1}{2}\log\left(\dfrac{1+e_{c}}{1-e_{c}}\right)-e_{c})}{e_{c}^{3}}
+% \end{align}
+% \begin{align}
+% \beta_{0}=\dfrac{1}{e_{c}^{2}}-\dfrac{(1-e_{c}^{2})\log\left(\dfrac{1+e_{c}}{1-e_{c}}\right)}{2e_{c}^{3}}
+% \end{align}
+% Based on these two parameters 
+% \begin{align}
+% X_{\dot{u}}=-m\dfrac{\alpha_{0}}{2-\alpha_{0}}
+% \end{align}
+% \begin{align}
+% Y_{\dot{v}}=-m\dfrac{\beta_{0}}{2-\beta_{0}}
+% \end{align}
+% \begin{align}
+% Z_{\dot{w}}=Y_{\dot{v}}
+% \end{align}
+% \begin{align}
+% M_{\dot{q}}=-\dfrac{m}{5}\dfrac{(b^{2}-a^{2})^{2}(\alpha_{0}-\beta_{0})}{2(b^{2}-a^{2})-(b^{2}+a^{2})(\alpha_{0}-\beta_{0})}
+% \end{align}
+% \begin{align}
+% N_{\dot{r}}=M_{\dot{q}}
+% \end{align}
+For estimating the added mass, we assume that the added mass of thrusters and fins are negligible and only the added mass of the cylindrical hull is taken into consideration. For symmetrical cylindrical rigid body of mass $m_{H}$ with circular section of radius $r_{H}$ and length $l_{H}$, the added mass can be derived theoretically by applying the strip theory as follows:
+\begin{align}
+X_{\dot{u}}=-0.1m_{H},
+\end{align}
+\begin{align}
+Y_{\dot{v}}=-\pi\rho r_{H}^{2}l_{H},
+\end{align}
+\begin{align}
+Z_{\dot{w}}=-\pi\rho r_{H}^{2}l_{H},
+\end{align}
+\begin{align}
+K_{\dot{p}}=0,
+\end{align}
+\begin{align}
+M_{\dot{q}}=-\dfrac{1}{12}\pi\rho r_{H}^{2}l_{H}^{3},
+\end{align}
+\begin{align}
+N_{\dot{r}}=-\dfrac{1}{12}\pi\rho r_{H}^{2}l_{H}^{3}.
+\end{align}
+When the robot is completely submerged in the fluid, the velocity is low and since the cylindrical hull has three planes of symmetry. The added mass matrix $\emph{\textbf{M}}_{A}$ and the Coriolis matrix $\emph{\textbf{C}}_{A}$ can be calculated as follows:
+\begin{align}
+\emph{\textbf{M}}_{A}=diag([-X_{\dot{u}} -Y_{\dot{v}} -Z_{\dot{w}}
+-K_{\dot{p}} -M_{\dot{q}} -N_{\dot{r}}])
+\end{align}
+\begin{align}
+\emph{\textbf{C}}_{A}=
+\begin{pmatrix}
+0&0&0&0&-Z_{\dot{w}}w&Y_{\dot{v}}v\\
+0&0&0&Z_{\dot{w}}w&0&-X_{\dot{u}}u\\
+0&0&0&-Y_{\dot{v}}v&X_{\dot{u}}u&0\\
+0&-Z_{\dot{w}}w&Y_{\dot{v}}v&0&-N_{\dot{r}}\dot{r}&M_{\dot{q}}q\\
+Z_{\dot{w}}w&0&-X_{\dot{u}}u&N_{\dot{r}}r&0&-K_{\dot{p}}p\\
+-Y_{\dot{v}}v&X_{\dot{u}}u&0&-M_{\dot{q}}q&K_{\dot{p}}p&0
+\end{pmatrix}. \label{EQ:CoriolisMatrix}
+\end{align}
+\nm{$\emph{\textbf{C}}_{A}$}{Added Coriolis Matrix}
+
+The total mass matrix is
+\begin{align}
+\emph{\textbf{M}}=\emph{\textbf{M}}_{RB}+\emph{\textbf{M}}_{A}
+\end{align}
+
+The damping matrix is defined as
+\begin{align}
+\emph{\textbf{D}}=
+diag([-X_{u|u|}|u|,-Y_{v|v|}|v|,-Z_{w|w|}|w|,-K_{p|p|}|p|,-M_{q|q|}|q|,-N_{r|r|}|r|])
+\end{align}
+
+The rotation drag is neglected since for stable underwater robot motion, angular velocities are very small. 
+
+The drag coefficient $ X_{u|u|}=-0.5\rho \pi a^{2}C_{d}$ and $Y_{v|v|}=Z_{w|w|}=X_{u|u|}\dfrac{a}{b}$.
+
+The rigid body Coriolis Matrix can be written componentwise as follows:
+\begin{align}
+\begin{pmatrix}
+0&0&0&-m(y_{g}q+z_{g}r)
+\end{pmatrix}
+\end{align} 
+\begin{gather}\label{EQ:RigidCoriolis}
+\emph{\textbf{C}}_{RB}(\vec{\upsilon})=
+\left(
+\begin{matrix} 
+0&0&0 \\
+0&0&0 \\
+0&0&0 \\
+-m(y_{g}+z_{g}r)&m(y_{g}p+w)&m(z_{g}p-v)\\
+m(x_{g}q-w)&-m(z_{g}r+x_{g}p)&m(z_{g}q+u)\\
+m(x_{g}r+v)&m(y_{g}r-u)&-m(x_{g}p+y_{g}q)
+\end{matrix}
+\right.
+ \nonumber\\
+\qquad \qquad\left. 
+\begin{matrix} {m(y_{g}q+z_{g}r)} & {-m(x_{g}q-w)} & {-m(x_{g}r+v)} \\
+-m(y_{g}p+w) & m(z_{g}r+x_{g}p) & -m(y_{g}r-u) \\
+-m(z_{g}p-v) & -m(z_{g}q+u) & m(x_{g}p+y_{g}q) \\
+0 & -I_{yz}q-I_{xz}p+I_{z}r & I_{yz}r+I_{xy}p-I_{y}q \\
+I_{yz}q+I_{xz}p-I_{z}r &0& -I_{xz}r-I_{xy}q+I_{x}p \\
+-I_{yz}r-I_{xy}p+I_{y}q&I_{xz}r+I_{xy}q-I_{x}p &0 
+\end{matrix}
+\right)
+\end{gather}
+In conclusion for this kind of geometric design, there are only two decision variable $a$ and $b$
+
+\section{Modeling of Control Actuators}
+Usually, fins and thrusters are used as actuators. In the second optiomization phase, we want to optimize the geometric parameters of all actuators. For the design of robots, geometric placement of all  actuators plays an decisive role for controlling performance. To find an optimal geometric properties of actuators in the designing phase, appropriate models for actuators are required to esstimate the generated control efforts under different actuator configurations.
+ 
+\subsection{Modeling of Thrusters}
+For modeling of thrusters, we adopt the modeling methods from~\cite{Du2016}
+Based on this modeling, each thruster is parameterized by the motor orientaion $\vec{d}_{T}$~(unit vector) and the motor position $\vec{r}_{T}$ in the body frame $\lbrace b \rbrace$, the motor spin direction  $b_{T}\in \lbrace-1,1\rbrace$. We use $u_{T}$ and $m_{T,r}$ to denote the magnitude of the thrust force and torque generated by the propeller rotation, respectively.
+
+Yoerger et al. proposed the one-State Model for the propeller.
+The torque and thrust relation can be describe as
+\begin{align}
+I_{p}\dot{\omega}_{p}=\lambda Q_{m}-K_{\omega}\omega_{p}|\omega_{p}|
+\label{EQ:PropellerDynamics1}
+\end{align}
+\begin{align}
+T=C_{t}\omega_{p}|\omega_{p}|
+\label{EQ:PropellerDynamics2}
+\end{align}
+where $I_{p}$ is the total inertia reflected to the propeller. The propeller rotates at $\omega_{p}$ radians per second. The three parameters $I_{p}$, $K_{\omega}$ and $C_{t}$ require to be identified. 
+
+Within each trim trajectory segment, all desired inputs should be constant, thus the spinning velocity should be time-invariant, i.e. $\dot{\omega}_{p}=0$, then according to \ref{EQ:PropellerDynamics1} and \ref{EQ:PropellerDynamics2}, the relationship between the thrust generated by the propeller and the rotation torque can be described with the following equation:
+\begin{align}
+Q_{m}=\dfrac{K_{w}}{C_{t}\lambda}T,
+\end{align}
+which means that the torque generated due to the rotation of propellers is proportional to the thrust force of the propeller. Thus, we can assume the torque is proportional to the thrust force
+\begin{align}
+m_{T,r}=\lambda u_{T},
+\end{align}   
+where $\lambda$ is the torque-force ratio. Taking the thruster motor orientation and the spin direction into consideration, we can have the rotation torque vector as
+\begin{align}
+\vec{m}_{T,r}=b_{T}\lambda u_{T}\vec{d}_{T}.
+\end{align} 
+Additionally, the thrust force will produce the thrust torque $\vec{m}_{T,t}$. For calculation of thrust torque, the center of gravity is assumed to be located in the body frame origin $CO$, then the thrust torque can be expressed as
+\begin{align}
+\vec{m}_{T,t}=\vec{r}_{T}\times u_{T}\vec{d}_{T}.
+\end{align}
+Combining the thrust torque and the rotation torque, we express the total torque produced by a thruster as 
+\begin{align}
+\vec{m}_{T}=\vec{m}_{T,r}+\vec{m}_{T,t}=b_{T}\lambda u_{T}\vec{d}_{T}+\vec{r}_{T}\times u_{T}\vec{d}_{T} \in \mathbb{R}^{3}
+\end{align}
+
+The force direction is determined by the thruster motor orientation $\vec{d}_{T}$ and the force vector $\vec{f}_{T}$ can be represented as
+\begin{align}
+\vec{f}_{T}=u_{T}\vec{d}_{T} \in \mathbb{R}^{3}
+\end{align}
+The generalised force vector for thruster is defined as
+\begin{align}
+\vec{\tau}_{T}=\begin{pmatrix}
+\vec{f}_{T} \\ \vec{m}_{T}
+\end{pmatrix}
+\end{align} 
+If we treat the thrust as the control input, we can define an unique mapping vector for a thruster based on its geometric parameters.
+\begin{align}
+\emph{\textbf{B}}_{T}=
+\begin{pmatrix}
+\vec{d}_{T} \\
+b_{T}\lambda \vec{d}_{T}+\vec{r}_{T}\times \vec{d}_{T}
+\end{pmatrix} \in \mathbb{R}^{6}.
+\end{align}
+Then the generalised force generated by a thrust can be in the following form:
+\begin{align}
+\vec{\tau}_{T}=\emph{\textbf{B}}_{T}u_{T}
+\end{align}
+ 
+\subsection{Modeling of Control Fins}
+An accurate hydrodynamic modeling of control fins in Appendix C introduces high order nonlinear terms into the input matrix. It makes the optimization problem nearly unsolvable. Two many restrictions on geometric and hydrodynamics properties  bring the robot design back into the traditional way. 
+A compromise can be found by means of small angle of attack assumption which is inspired by modeling methods in~\cite{FinModeling}.
+
+\begin{figure}
+\includegraphics[width=0.4\textwidth]{FinLocation1.eps}
+\includegraphics[width=0.4\textwidth]{FinLocation2.eps}
+\caption{Definition of Fin Geometric Parameters}	
+\label{FIG:FinLocation}
+\end{figure}
+
+Fins are modeled as rectangle with length $a_{F}$ and width $b_{F}$. Assume the side edge $b_{F}$ is directly attached on the hull surface. Then we represent the position and the orientation of the fins in the hull cylindrical coordinate system. As illustrated in Figure \ref{FIG:FinLocation}, $x_{F}$ is defined as the x-coordinate of fin geometric center in body frame $\lbrace b \rbrace$. We rotate the $xz$-plane of the robot body frame in the counterclockwise direction by angle $\gamma_{F}$ until the fin geometric center located in this plane. Consequently, the fin geometric center vector $\vec{r}_{F}$ can be written as
+\begin{align}
+\vec{r}_{F}=
+\begin{pmatrix}
+x_{F} \\
+\dfrac{1}{2}(d_{H}+a_{F})\sin(\gamma_{F}) \\
+\dfrac{1}{2}(d_{H}+a_{F})\cos(\gamma_{F})
+\end{pmatrix}.
+\end{align}
+For each fin, the lift $L$ and drag $D$ of fins can be calculated as 
+
+For small angle of attack $\alpha$, it is reasonable to approximate the lift and drag coefficients as
+\begin{align}
+C_{L}(\alpha)=c_{L}\alpha,
+\end{align}    
+\begin{align}
+C_{D}(\alpha)=c_{D}\alpha^{2},
+\end{align}
+where $c_{L}$, $c_{D}$ are fin-specific parameters estimated from experiments.
+
+\begin{align}
+F_{ F }(\alpha )=\begin{bmatrix} \sum _{ i=1 }^{ n }{ L_{ i }(\alpha _{ i })^{ T }e_{ 1 }+ } \sum _{ i=1 }^{ n }{ D_{ i }(\alpha _{ i })^{ T }e_{ 1 } }  \\ \sum _{ i=1 }^{ n }{ L_{ i }(\alpha _{ i })^{ T }e_{ 2 }+ } \sum _{ i=1 }^{ n }{ D_{ i }(\alpha _{ i })^{ T }e_{ 2 } }  \\ \sum _{ i=1 }^{ n }{ L_{ i }(\alpha _{ i })^{ T }e_{ 3 }+ } \sum _{ i=1 }^{ n }{ D_{ i }(\alpha _{ i })^{ T }e_{ 3 } }  \end{bmatrix}\\
+\tau _{ F }(\alpha )=\sum _{ i=1 }^{ n }{ \tau_{i} \times L_{i}(\alpha_{i}) } +\sum _{ i=1 }^{ n }{ \tau_{i} \times D_{i}(\alpha_{i}) }
+\end{align}
+\begin{align}
+{ C }_{ L }(\alpha _{ i })={ C }_{ L }\alpha _{ i }\\
+{ C }_{ D }(\alpha _{ i })={ C }_{ D }\alpha _{ i }^{ 2 }+{ C }_{ D0 }\\
+e_{ 1 }=[100]^{ T }\\ e_{ 2 }=[010]^{ T }\\ e_{ 3 }=[001]^{ T }\\ 
+L_{ i }(\alpha _{ i })=S{ C }_{ L }(\alpha _{ i })q(V_{ ind })\\ 
+D_{ i }(\alpha _{ i })=S{ C }_{ D }(\alpha _{ i })q(V_{ ind })\\ 
+L_{ i }(\alpha _{ i }):=L_{ i }(\alpha _{ i })\begin{bmatrix} 0 \\ cos({ \gamma  }_{ F }) \\ -sin({ \gamma  }_{ F }) \end{bmatrix}
+\end{align}
+
+
+%____________________________________________________
